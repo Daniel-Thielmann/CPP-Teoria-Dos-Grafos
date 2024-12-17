@@ -1,0 +1,45 @@
+# Arquivos de compilação e executáveis
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dll
+
+# Arquivos temporários do sistema
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Diretórios comuns de build
+/build/
+/dist/
+/bin/
+/Debug/
+/Release/
+
+# Makefile intermediários
+Makefile~
+*.d
+
+# Arquivos gerados por IDEs
+.vscode/
+.idea/
+*.code-workspace
+
+# Arquivos de configuração locais
+*.local
+*.user
+*.session
+
+# Arquivos gerados automaticamente
+CMakeCache.txt
+CMakeFiles/
+
+# Arquivos do sistema Windows
+desktop.ini
