@@ -4,27 +4,19 @@
 #include <iostream>
 #include "no.h"
 
+class listaEncad {
+private:
+    No* cabeca; // Ponteiro para o primeiro nó da lista
+    No* cauda;
 
-class listaEncad{
-    private:
-    No* elemento; // Ponteiro para o primeiro nó da lista
-    
-    public:
-    // Construtor
+public:
     listaEncad();
-     
-
-    // Destrutor
     ~listaEncad();
-
-    // Inserir no início da lista
-    void insereElemento(int info);
-    
-    bool removeElemento(int info);
-
-    void exibirLista();
-    bool estaVazia(); 
-
+    void criaNo(int valor);
+    void insereFinal(int valor);
+    int getTamanho();
+    void exibeLista();
+    bool ehVazia();
 };
 
 #endif

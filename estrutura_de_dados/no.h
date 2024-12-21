@@ -1,20 +1,16 @@
-#ifndef LISTAENCAD_H
-#define LISTAENCAD_H
+#ifndef NO_H
+#define NO_H
 
-#include <iostream>
-
-class No
-{
+class No {
 private:
-	int valor;
-	No* prox;
+    int valor;
+    No* prox;
+
 public:
-	
-    No(int valor); // construtor
-	int getValor(); // obtém o valor
-	No* getProx(); // obtém o próximo No
-	void setProx(No* p); // seta o próximo No
-	
+    No(int valor);           // Construtor
+    int getValor();          // Obtém o valor
+    No* getProx();           // Obtém o próximo nó
+    void setProx(No* p);     // Define o próximo nó
 };
 
 #endif
