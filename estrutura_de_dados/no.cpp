@@ -18,6 +18,11 @@
 		return prox;
 	}
 
+	No* No::getAnt() // obtém o No anterior
+	{
+		return ant;
+	}
+
 	void No::setProx(No* p) // seta o próximo No
 	{
 		prox = p;

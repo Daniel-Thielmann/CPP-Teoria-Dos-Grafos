@@ -8,11 +8,12 @@ class listaEncad {
 private:
     No* cabeca; // Ponteiro para o primeiro nó da lista
     No* cauda;
+    int tamanho;
 
 public:
     listaEncad();
     ~listaEncad();
-    void criaNo(int valor);
+    void insereInicio(int valor);
     void insereFinal(int valor);
     int getTamanho();
     void exibeLista();
