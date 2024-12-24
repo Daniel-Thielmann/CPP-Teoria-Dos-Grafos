@@ -2,6 +2,7 @@
 #include "grafo_lista.h"
 #include "include/funcoes/eh_conexo.h"
 #include "include/funcoes/tem_ciclo.h"
+#include "include/funcoes/eh_arvore.h"
 
 using namespace std;
 
@@ -29,5 +30,13 @@ int main() {
         cout << "O grafo não tem ciclo" << endl;
     }
 
+
+    bool z = eh_arvore(grafo.getListaAdjacencia(), grafo.getNVertice());
+    if(z == true){
+        cout << "O grafo é uma árvore" << endl;
+    }else{ 
+        cout << "O grafo não é uma árvore" << endl;
+    }
+    
     return 0;
 }
