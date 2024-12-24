@@ -3,6 +3,7 @@
 #include "include/funcoes/eh_conexo.h"
 #include "include/funcoes/tem_ciclo.h"
 #include "include/funcoes/eh_arvore.h"
+#include "include/funcoes/eh_completo.h"
 
 using namespace std;
 
@@ -37,6 +38,13 @@ int main() {
     }else{ 
         cout << "O grafo não é uma árvore" << endl;
     }
-    
+
+    bool w = ehCompleto(grafo.getListaAdjacencia(), grafo.getNVertice());
+    if(w == true){
+        cout << "O grafo é completo" << endl;
+        }else{
+            cout << "O grafo não é completo" << endl;
+        }
+
     return 0;
 }
