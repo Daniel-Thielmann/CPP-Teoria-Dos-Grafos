@@ -4,9 +4,11 @@
 #include <iostream>
 #include "no.h"
 
+
+
 class listaEncad {
 private:
-    No* cabeca; // Ponteiro para o primeiro nó da lista
+    No* cabecaNo; // Ponteiro para o primeiro nó da lista
     No* cauda;
     int tamanho;
 
@@ -16,8 +18,16 @@ public:
     void insereInicio(int valor);
     void insereFinal(int valor);
     int getTamanho();
-    void exibeLista();
+ //   void exibeLista();
     bool ehVazia();
+    void setCabeca(No* cabeca);
+    No* getCabecaNo();
+
+
+    void exibirLista();
+    bool existe(int valor);
+    void insereUnico(int valor);
+
 };
 
 #endif

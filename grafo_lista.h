@@ -1,27 +1,34 @@
-#ifndef GRAFO_LISTA_H
-#define GRAFO_LISTA_H
-#include "grafo.h"
-#include "./estrutura_de_dados/listaEncad.h"
+#ifndef GRAFO_TESTE_H
+#define GRAFO_TESTE_H
+
+#include <iostream>
 #include <string>
+#include "listaEncad.h"
 
 using namespace std;
 
-class GrafoLista {
+class grafoLista{
 
-protected:
-    int m_numVertices;  // Número de vértices  m é de membro, para dizer que não é uma variável qualquer
-    int m_numArestas;   // Número de arestas
-    listaEncad vertices; // Lista contendo os vertices
-    No** m_listaAdjacencia; // Lista de adjacência
-    listaEncad* vizinhos;    // Lista de adjacência (arestas vizinhos)
+private:
+     
+     listaEncad* listaAdjacencia;
+     int valorVertice,nVertice,nAresta;
+     string nomeArq;
+
 
 public:
-     GrafoLista(string path);  // Construtor
-   virtual ~GrafoLista();         // Destrutor  , é virtual pq quem de fato opera o destrutor é a classe filha
-     
+
+    void adicionaAresta(listaEncad listaAdjacencia[],int origem, int destino);
+
+    void imprimeListaAdjancecia(listaEncad *listaAdjacencia, int nVertice);
+
+    grafoLista(string nomeArq);
+    ~grafoLista();
+
+    int getNAresta();
+
+
 };
-
-
 
 
 #endif
