@@ -6,14 +6,14 @@
 
 using namespace std;
 
-
+//Construtor da lista encadeada
 listaEncad::listaEncad() {
     this->cabecaNo = nullptr;
     this->cauda = nullptr;
     this->tamanho = 0;
 }
 
-
+//Desconstrutor da lista encadeada
 listaEncad::~listaEncad() {           
     while (cabecaNo != nullptr) {
         No* temp = cabecaNo;
