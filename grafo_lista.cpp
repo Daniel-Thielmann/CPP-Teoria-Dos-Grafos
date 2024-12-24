@@ -64,3 +64,15 @@ void grafoLista::adicionaAresta(listaEncad listaAdjacencia[], int verticea, int 
     listaAdjacencia[verticea].insereUnico(verticeb); // Adiciona a aresta na lista de adjacência
     listaAdjacencia[verticeb].insereUnico(verticea); // Adiciona a aresta inversa para grafo não-direcionado
 }
+
+int grafoLista::getNAresta() {
+    return nAresta;
+}
+
+int grafoLista::getNVertice() {
+    return nVertice;
+}
+
+listaEncad* grafoLista::getListaAdjacencia() {
+    return listaAdjacencia;
+}

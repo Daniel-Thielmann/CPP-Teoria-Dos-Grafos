@@ -26,8 +26,9 @@ public:
     ~grafoLista();
 
     int getNAresta();
+    int getNVertice();
 
-
+    listaEncad* getListaAdjacencia();
 };
 
 
