@@ -1,20 +1,25 @@
+#include "funcoes/eh_arvore.h"
+#include "./grafo_lista.h"
 #include <iostream>
-#include "listaEncad.h"
-#include "./include/funcoes/tem_ciclo.h"
-#include "./include/funcoes/eh_conexo.h"
 
 using namespace std;
 
-bool eh_arvore(listaEncad* listaAdjacencia, int nVertice) {
+bool ehArvore(const GrafoLista& grafo) {
+    // Verifica se o grafo tem ciclo
+    if (grafo.ehDirecionado()) {
+        if (grafo.temCiclo()) { 
+            return false; // Grafo direcionado com ciclo não é uma árvore
+        }
+    } else {
+        if (grafo.temCicloNaoDirecionado()) {
+            return false; // Grafo não direcionado com ciclo não é uma árvore
+        }
+    }
+
     // Verifica se o grafo é conexo
-    if (!eConexo(listaAdjacencia, nVertice)) {
-        return false;
+    if (!grafo.ehConexo()) {
+        return false; // Grafo desconexo não é uma árvore
     }
 
-    // Verifica se o grafo não tem ciclo
-    if (temCiclo(listaAdjacencia, nVertice)) {
-        return false;
-    }
-
-    return true;
+    return true; // Se não tem ciclo e é conexo, é uma árvore
 }

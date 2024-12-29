@@ -1,10 +1,8 @@
 #ifndef EH_ARVORE_H
 #define EH_ARVORE_H
 
-#include "../../listaEncad.h"
-#include "eh_conexo.h"
-#include "tem_ciclo.h"
+#include "grafo_lista.h"
 
-bool eh_arvore(listaEncad* listaAdjacencia, int nVertice);
+bool ehArvore(const GrafoLista& grafo); // Verifica se o grafo é uma árvore
 
-#endif
+#endif // EH_ARVORE_H

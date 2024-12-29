@@ -1,24 +1,20 @@
-#include "./include/funcoes/eh_completo.h"
 #include <iostream>
+#include <cstdlib>
+#include "funcoes/eh_completo.h"
+#include "./grafo_lista.h"
 
 using namespace std;
 
-bool ehCompleto(listaEncad* listaAdjacencia, int nVertice) {
-    // Para cada vértice, verifica se está conectado a todos os outros vértices
-    for (int i = 0; i < nVertice; i++) {
-        int count = 0;
-        No* atual = listaAdjacencia[i].getCabecaNo();
+bool ehCompleto(const GrafoLista& grafo) { // Função que verifica se o grafo é completo
+    const ListaV& vertices = grafo.getVertices(); // Obtém a lista de vértices
+    int numVertices = vertices.tamanho();         // Obtém o número de vértices
 
-        // Conta o número de vértices adjacentes
-        while (atual != nullptr) {
-            count++;
-            atual = atual->getProx();
+    NoV* noVertice = vertices.getRaiz();        // Obtém o nó raiz
+    while (noVertice) {           // Enquanto houver vértices na lista
+        if (noVertice->v->arestas.tamanho() != numVertices - 1) {   // Se o vértice não tem o número correto de arestas
+            return false; // O grafo não é completo
         }
-
-        // Em um grafo completo, o número de arestas para cada vértice deve ser (nVertice - 1) (ele n se conecta consigo mesmo por isso -1)
-        if (count != nVertice - 1) {
-            return false;
-        }
+        noVertice = noVertice->proximo; // Move para o próximo vértice
     }
-    return true;
+    return true;  // O grafo é completo
 }

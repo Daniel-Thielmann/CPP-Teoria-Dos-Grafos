@@ -1,8 +1,12 @@
 #ifndef EH_COMPLETO_H
-#define EH_COMPLETO_H 
-#include "./listaEncad.h"
+#define EH_COMPLETO_H
 
-// Função para verificar se o grafo é completo
-bool ehCompleto(listaEncad* listaAdjacencia, int nVertice);
+#include <iostream>
+#include "grafo_lista.h"
 
-#endif
+using namespace std;
+
+// Verifica se o grafo é completo
+bool ehCompleto(const GrafoLista& grafo);
+
+#endif // EH_COMPLETO_H
