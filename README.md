@@ -7,12 +7,16 @@ Este repositório contém a implementação do **Trabalho 1** para a disciplina 
 ## **Descrição do Projeto**
 
 ### **1. Estruturas de Representação**
+
 O projeto implementa duas representações de grafos:
+
 - **grafo_matriz**: Utiliza uma **matriz de adjacência** para representar as arestas, sendo estática e, no caso de grafos não direcionados, armazenada como uma matriz triangular.
 - **grafo_lista**: Utiliza **listas encadeadas** para armazenar os vértices e arestas dinamicamente.
 
 ### **2. Funcionalidades Implementadas**
+
 A classe abstrata `grafo` fornece as seguintes funcionalidades que são herdadas pelas classes filhas:
+
 - `eh_bipartido()`: Verifica se o grafo é bipartido.
 - `n_conexo()`: Retorna o número de componentes conexas.
 - `get_grau()`: Retorna o grau do grafo.
@@ -30,10 +34,19 @@ A classe abstrata `grafo` fornece as seguintes funcionalidades que são herdadas
 ---
 
 ## **Requisitos**
+
 - **Linguagem**: C++
 - **Paradigma**: Programação Orientada a Objetos (POO), utilizando conceitos de herança e encapsulamento.
 - **Compilação e Execução**:
-  - Compilação realizada com suporte ao **Valgrind** para análise de memória.
+
   - Os comandos devem ser executados via terminal, conforme os seguintes casos:
+
+  1. Compilar o Programa Principal localizado em /src/main.cpp: mingw32-make main
+     1.1 Execute o programa: .\bin\programa.exe
+
+  2. Compilar e Executar os Testes localizados em /tests: mingw32-make test
+     2.1 Execute todos os testes: .\bin\teste_todos.exe
+
+  3. Limpar os arquivos gerados: mingw32-make clean
 
 ---
