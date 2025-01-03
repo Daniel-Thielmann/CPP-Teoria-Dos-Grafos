@@ -1,6 +1,6 @@
 #include <iostream>
-#include "funcoes/aresta_ponderada.h"
-#include "./grafo_lista.h"
+#include "aresta_ponderada.h"
+#include "grafo_lista.h"
 
 using namespace std;
 

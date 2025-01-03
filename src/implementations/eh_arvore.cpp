@@ -1,5 +1,5 @@
-#include "funcoes/eh_arvore.h"
-#include "./grafo_lista.h"
+#include "eh_arvore.h"
+#include "grafo_lista.h"
 #include <iostream>
 
 using namespace std;

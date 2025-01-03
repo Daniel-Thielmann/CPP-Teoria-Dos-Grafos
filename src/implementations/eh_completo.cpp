@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
-#include "funcoes/eh_completo.h"
-#include "./grafo_lista.h"
+#include "eh_completo.h"
+#include "grafo_lista.h"
 
 using namespace std;
 
