@@ -29,6 +29,7 @@ public:
     bool verificaCicloNaoDirecionado(Vertice* vertice, bool* visitado, int pai) const; // Verifica ciclos em grafos não direcionados
     bool temCicloNaoDirecionado() const; // Verifica se o grafo nao direcionado contém ciclos
     bool ehDirecionado() const; // Verifica se o grafo é direcionado
+    bool vertice_ponderado() const; // Verifica se o grafo tem vertices com pesos
 
 
 private:

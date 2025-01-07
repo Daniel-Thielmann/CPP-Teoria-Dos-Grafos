@@ -223,7 +223,6 @@ bool GrafoLista::ehDirecionado() const { // Verifica se o grafo é direcionado
     return direcionado; // Retorna o valor armazenado ao carregar o grafo
 }
 
-
 // Verifica se o grafo é completo (todos os vértices estão conectados)
 bool GrafoLista::ehCompleto() const { 
     int numVertices = vertices.tamanho();
@@ -288,4 +287,8 @@ void GrafoLista::dfsConexao(Vertice* vertice, bool* visitado) const {
         }
         noVertice = noVertice->proximo;
     }
+}
+
+bool GrafoLista::vertice_ponderado() const{     // Verifica se os vertices do grafo tem peso
+    return ponderadoVertices;   // Retorna o valor armazenado ao carregar o grafo
 }
