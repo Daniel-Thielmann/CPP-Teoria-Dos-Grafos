@@ -1,4 +1,4 @@
-﻿#include "grafo_matriz.h"
+#include "grafo_matriz.h"
 #include <iostream>
 
 using namespace std;
@@ -27,7 +27,7 @@ grafo_matriz::grafo_matriz(int a, bool b, bool c, bool d, int v[])
 			}
 		}
 	}
-	else   // caso não direcionado aloca uma array que representa uma matriz triangular com 0 para cada aresta por padrão
+	else   // caso n�o direcionado aloca uma array que representa uma matriz triangular com 0 para cada aresta por padr�o
 	{
 
 		int x = tam_lista(a);
@@ -54,7 +54,7 @@ grafo_matriz::grafo_matriz(int a, bool b, bool c, bool d, int v[])
 	}
 }
 
-int grafo_matriz::tam_lista(int a)	// funÃ§Ã£o que retorna o tamanho de uma array que representa uma matriz triangular quadrada de a colunas/linhas
+int grafo_matriz::tam_lista(int a)	// fun��o que retorna o tamanho de uma array que representa uma matriz triangular quadrada de a colunas/linhas
 {
 	return (a * (a + 1)) / 2;
 }
@@ -70,7 +70,7 @@ grafo_matriz :: ~grafo_matriz()
 		}
 		delete[] grafo;
 	}
-	else     // caso grafo nÃ£o direcionado irÃ¡ deletar uma array
+	else     // caso grafo n�o direcionado ir� deletar uma array
 	{
 		delete[] grafo[0];
 		delete[] grafo;

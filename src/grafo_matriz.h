@@ -11,14 +11,14 @@ class grafo_matriz
 {
 private:
 
-	int * vert;  // valor de cada vertice
+	int * pesoVerticesices;  // valor de cada pesoVerticesicesice
 	int ** grafo; // vector para substituir lista e matriz
 
-	int n; // numero de vertices
-	bool pond_v; //vertices  0 == não ponderados  1 == ponderados
-	bool pond_a; //arestas 0 == não ponderadas  1 == ponderadas
-	bool dir; // 0 == não direcionado 1 == direcionado
-	int tam_lista(int a);  // função que retorna o tamanho de uma array que representa uma matriz triangular quadrada de a colunas/linhas
+	int n; // numero de pesoVerticesicesices
+	bool ponderadoVertices; //pesoVerticesicesices  0 == nï¿½o ponderados  1 == ponderados
+	bool ponderadosArestas; //arestas 0 == nï¿½o ponderadas  1 == ponderadas
+	bool direcionado; // 0 == nï¿½o direcionado 1 == direcionado
+	int tam_lista(int a);  // funï¿½ï¿½o que retorna o tamanho de uma array que representa uma matriz triangular quadrada de a colunas/linhas
 
 
 public:
@@ -26,10 +26,16 @@ public:
 	grafo_matriz(int a, bool b, bool c, bool d, int v[]);
 	~grafo_matriz();
 	void adiciona_aresta(int a, int b,int c);
-	bool eh_direcionado();
-	bool vertice_ponderado();
-	bool aresta_ponderada();
+	bool ehDirecionado();
+	bool verticePonderado();
+	bool arestaPonderada();
 	void imprime_grafo();
+	int get_ordem();
+	bool ehConexo();
+	void dfsConexao(int vertice, bool *verticeVerificado);
+	bool ehArvore();
+	bool temCiclo();
+	bool ehCompleto();
 
 	
 };
