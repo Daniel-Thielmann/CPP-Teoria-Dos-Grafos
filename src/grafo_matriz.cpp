@@ -7,11 +7,11 @@ grafo_matriz::grafo_matriz(int a, bool b, bool c, bool d, int v[])
 {
 
 	n = a;
-	pond_v = b;
-	pond_a = c;
-	dir = d;
+	ponderadoVertices = b;
+	ponderadosArestas = c;
+	direcionado = d;
 
-	if (dir == 1)  // caso grafo direcionado aloca uma matriz com o duplo ponteiro grafo e prenche com 0 para cada aresta por padrão
+	if (direcionado == 1)  // caso grafo direcionado aloca uma matriz com o duplo ponteiro grafo e prenche com 0 para cada aresta por padrï¿½o
 	{
 		grafo = new int* [n];
 		for (int i = 0; i < n; i++)
@@ -27,7 +27,7 @@ grafo_matriz::grafo_matriz(int a, bool b, bool c, bool d, int v[])
 			}
 		}
 	}
-	else   // caso não direcionado aloca uma array que representa uma matriz triangular com 0 para cada aresta por padrão
+	else   // caso nï¿½o direcionado aloca uma array que representa uma matriz triangular com 0 para cada aresta por padrï¿½o
 	{
 
 		int x = tam_lista(a);
@@ -40,21 +40,21 @@ grafo_matriz::grafo_matriz(int a, bool b, bool c, bool d, int v[])
 	}
 
 
-	if (pond_v == 0)   // caso vertices não ponderados todos possuem valor 1(pensei em deixar um array de 1 mas pra q?)
+	if (ponderadoVertices == 0)   // caso vertices nï¿½o ponderados todos possuem valor 1(pensei em deixar um array de 1 mas pra q?)
 	{
-		vert = new int(1);
+		pesoVerticesices = new int(1);
 	}
-	else     // caso vertices ponderados é alocado um array com o valor de cada vertice
+	else     // caso vertices ponderados ï¿½ alocado um array com o valor de cada vertice
 	{
-		vert = new int[n];
+		pesoVerticesices = new int[n];
 		for (int k = 0; k < n; k++)
 		{
-			vert[k] = v[k];
+			pesoVerticesices[k] = v[k];
 		}
 	}
 }
 
-int grafo_matriz::tam_lista(int a)	// função que retorna o tamanho de uma array que representa uma matriz triangular quadrada de a colunas/linhas
+int grafo_matriz::tam_lista(int a)	// funï¿½ï¿½o que retorna o tamanho de uma array que representa uma matriz triangular quadrada de a colunas/linhas
 {
 	return (a * (a + 1)) / 2;
 }
@@ -62,7 +62,7 @@ int grafo_matriz::tam_lista(int a)	// função que retorna o tamanho de uma array 
 grafo_matriz :: ~grafo_matriz()
 {
 
-	if (dir == 1)    // caso grafo direcionado irá deletar uma matriz
+	if (direcionado == 1)    // caso grafo direcionado irï¿½ deletar uma matriz
 	{
 		for (int i = 0; i < n; i++)
 		{
@@ -70,20 +70,20 @@ grafo_matriz :: ~grafo_matriz()
 		}
 		delete[] grafo;
 	}
-	else     // caso grafo não direcionado irá deletar uma array
+	else     // caso grafo nï¿½o direcionado irï¿½ deletar uma array
 	{
 		delete[] grafo[0];
 		delete[] grafo;
 	}
 
-	delete[] vert;
+	delete[] pesoVerticesices;
 }
 
 void grafo_matriz::adiciona_aresta(int a, int b, int c) // 'a' vertice de origem 'b' vertice de destino 'c' peso da aresta
 {
-	if (dir == 1)
+	if (direcionado == 1)
 	{
-		if (pond_a == 1)
+		if (ponderadosArestas == 1)
 		{
 			grafo[a - 1][b - 1] = c;
 		}
@@ -94,10 +94,12 @@ void grafo_matriz::adiciona_aresta(int a, int b, int c) // 'a' vertice de origem
 	}
 	else
 	{
+		if(a == b)
+			grafo[0][a + tam_lista(b - 1) - 1] = 0;
 
-		if (pond_a == 1)
+		if (ponderadosArestas == 1)
 		{
-			if (a <= b)
+			if (a < b)
 			{
 				grafo[0][a + tam_lista(b - 1) - 1] = c;
 			}
@@ -109,7 +111,7 @@ void grafo_matriz::adiciona_aresta(int a, int b, int c) // 'a' vertice de origem
 
 		else
 		{
-			if (a <= b)
+			if (a < b)
 			{
 				grafo[0][a + tam_lista(b - 1) - 1] = 1;
 			}
@@ -123,7 +125,7 @@ void grafo_matriz::adiciona_aresta(int a, int b, int c) // 'a' vertice de origem
 
 void grafo_matriz::imprime_grafo()
 {
-	if (dir == 1)
+	if (direcionado == 1)
 	{
 		for (int i = 0; i < n; i++)
 		{
@@ -156,20 +158,108 @@ void grafo_matriz::imprime_grafo()
 	}
 }
 
-bool grafo_matriz::eh_direcionado()
+bool grafo_matriz::ehDirecionado()
 {
-	return dir;
+	return direcionado;
 }
 
-bool grafo_matriz::vertice_ponderado()
+bool grafo_matriz::verticePonderado()
 {
-	return pond_v;
+	return ponderadoVertices;
 }
 
-
-
-bool grafo_matriz::aresta_ponderada()
+bool grafo_matriz::arestaPonderada()
 {
-	return pond_a;
+	return ponderadosArestas;
 }
 
+int grafo_matriz::get_ordem()
+{
+	return n;
+}
+
+bool grafo_matriz::ehConexo()
+{
+	if(n == 0)
+		return true;
+	bool * verticeVerificado;
+	verticeVerificado = new bool[n];
+	for(int i = 0; i < n; i++)
+		verticeVerificado[i] = false;
+	dfsConexao(0, verticeVerificado);
+	for(int i = 0; i < n; i++)
+		if(verticeVerificado[i] == false)
+			return false;
+	return true;
+}
+
+void grafo_matriz::dfsConexao(int vertice, bool * verticeVerificado){
+	verticeVerificado[vertice] = true;
+	if(direcionado)
+	{
+		for(int i = 0; i < n; i++)
+			if((!verticeVerificado[i] && vertice != i && grafo[vertice][i] != 0))
+				dfsConexao(i,verticeVerificado);
+	}
+	else{
+		int x = 0;
+		for (int i = 0; i < n; i++){ 
+            for (int j = 0; j < i; j++, x++){ 
+                if ((i == vertice || j == vertice) && i != j) {
+                    int vizinho;
+					if (i == vertice)
+						vizinho = j;
+					 else
+						vizinho = i;
+                    if (!verticeVerificado[vizinho] && grafo[0][x] != 0)
+                        dfsConexao(vizinho, verticeVerificado);
+				}
+			}
+		}
+	}
+	return;
+}
+
+bool grafo_matriz::ehCompleto()
+{
+	if(direcionado){
+		for(int i = 0; i < n; i++)
+			for(int j = 0; j < n; j++){
+				if(i != j && grafo[i][j] == 0)
+					return false;
+        }
+	}
+	else{
+		int x = tam_lista(n);
+		for(int i = 0; i < n; i++)
+			if(grafo[0][i] == 0)
+				return false;
+	}
+	return true;
+}
+
+bool grafo_matriz::ehArvore()
+{
+	int numeroArestas = 0;
+	if(!ehConexo)
+		return false;
+	if(direcionado){
+		for(int i = 0; i < n; i++)
+			for(int j = 0; j < n; j++)
+				if(j != i && grafo[i][j] != 0)
+					numeroArestas++;
+	}
+	else{
+		for(int i = 0; i < tam_lista(n); i++)
+			if(grafo[0][i] != 0)
+				numeroArestas++;
+	}
+	if(temCiclo())
+		return false;
+	return true;
+}
+
+bool grafo_matriz::temCiclo()
+{
+
+}
