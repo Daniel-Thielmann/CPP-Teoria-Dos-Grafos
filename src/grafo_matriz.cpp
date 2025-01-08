@@ -3,25 +3,20 @@
 
 using namespace std;
 
-grafo_matriz::grafo_matriz(int a, bool b, bool c, bool d, int v[])
+grafo_matriz::grafo_matriz(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado, int pesoVerticesices[]) : Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado)
 {
-
-	n = a;
-	ponderadoVertices = b;
-	ponderadosArestas = c;
-	direcionado = d;
 
 	if (direcionado == 1)  // caso grafo direcionado aloca uma matriz com o duplo ponteiro grafo e prenche com 0 para cada aresta por padr�o
 	{
-		grafo = new int* [n];
-		for (int i = 0; i < n; i++)
+		grafo = new int* [numVertices];
+		for (int i = 0; i < numVertices; i++)
 		{
-			grafo[i] = new int[n]();
+			grafo[i] = new int[numVertices]();
 		}
 
-		for (int j = 0;j < n; j++)
+		for (int j = 0;j < numVertices; j++)
 		{
-			for (int k = 0; k < n; k++)
+			for (int k = 0; k < numVertices; k++)
 			{
 				grafo[j][k] = 0;
 			}
@@ -30,7 +25,7 @@ grafo_matriz::grafo_matriz(int a, bool b, bool c, bool d, int v[])
 	else   // caso n�o direcionado aloca uma array que representa uma matriz triangular com 0 para cada aresta por padr�o
 	{
 
-		int x = tam_lista(a);
+		int x = tam_lista(numVertices);
 		grafo = new int* [1];
 		grafo[0] = new int[x];
 		for (int h = 0; h < x; h++)
@@ -46,10 +41,10 @@ grafo_matriz::grafo_matriz(int a, bool b, bool c, bool d, int v[])
 	}
 	else     // caso vertices ponderados � alocado um array com o valor de cada vertice
 	{
-		pesoVerticesices = new int[n];
-		for (int k = 0; k < n; k++)
+		pesoVerticesices = new int[numVertices];
+		for (int k = 0; k < numVertices; k++)
 		{
-			pesoVerticesices[k] = v[k];
+			this->pesoVerticesices[k] = pesoVerticesices[k];
 		}
 	}
 }
@@ -64,7 +59,7 @@ grafo_matriz :: ~grafo_matriz()
 
 	if (direcionado == 1)    // caso grafo direcionado ir� deletar uma matriz
 	{
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < numVertices; i++)
 		{
 			delete[] grafo[i];
 		}
@@ -95,7 +90,7 @@ void grafo_matriz::adiciona_aresta(int a, int b, int c) // 'a' vertice de origem
 	else
 	{
 		if(a == b)
-			grafo[0][a + tam_lista(b - 1) - 1] = 0;
+			grafo[0][a + tam_lista(b - 1) - 1] = 0;		// Previne laços
 
 		if (ponderadosArestas == 1)
 		{
@@ -127,9 +122,9 @@ void grafo_matriz::imprime_grafo()
 {
 	if (direcionado == 1)
 	{
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < numVertices; i++)
 		{
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < numVertices; j++)
 			{
 				cout << grafo[i][j] << "  ";
 			}
@@ -140,9 +135,9 @@ void grafo_matriz::imprime_grafo()
 	else
 	{
 		int x = 0;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < numVertices; i++)
 		{
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < numVertices; j++)
 			{
 				if (i >= j)
 				{
@@ -158,52 +153,35 @@ void grafo_matriz::imprime_grafo()
 	}
 }
 
-bool grafo_matriz::ehDirecionado()
-{
-	return direcionado;
-}
 
-bool grafo_matriz::verticePonderado()
-{
-	return ponderadoVertices;
-}
-
-bool grafo_matriz::arestaPonderada()
-{
-	return ponderadosArestas;
-}
-
-int grafo_matriz::get_ordem()
-{
-	return n;
-}
-
+// Verifica se todos os termos se conectam
 bool grafo_matriz::ehConexo()
 {
-	if(n == 0)
+	if(numVertices == 0)
 		return true;
 	bool * verticeVerificado;
-	verticeVerificado = new bool[n];
-	for(int i = 0; i < n; i++)
+	verticeVerificado = new bool[numVertices];
+	for(int i = 0; i < numVertices; i++)
 		verticeVerificado[i] = false;
 	dfsConexao(0, verticeVerificado);
-	for(int i = 0; i < n; i++)
+	for(int i = 0; i < numVertices; i++)
 		if(verticeVerificado[i] == false)
 			return false;
 	return true;
 }
 
+// Função auxiliar de ehConexo que verifica se todos os vertices serao encontrados ao começar pelo vertice de indice 0
 void grafo_matriz::dfsConexao(int vertice, bool * verticeVerificado){
 	verticeVerificado[vertice] = true;
 	if(direcionado)
 	{
-		for(int i = 0; i < n; i++)
+		for(int i = 0; i < numVertices; i++)
 			if((!verticeVerificado[i] && vertice != i && grafo[vertice][i] != 0))
 				dfsConexao(i,verticeVerificado);
 	}
 	else{
 		int x = 0;
-		for (int i = 0; i < n; i++){ 
+		for (int i = 0; i < numVertices; i++){ 
             for (int j = 0; j < i; j++, x++){ 
                 if ((i == vertice || j == vertice) && i != j) {
                     int vizinho;
@@ -220,37 +198,39 @@ void grafo_matriz::dfsConexao(int vertice, bool * verticeVerificado){
 	return;
 }
 
+// Função que verifica se todos os vertices fazem conexao entre si
 bool grafo_matriz::ehCompleto()
 {
 	if(direcionado){
-		for(int i = 0; i < n; i++)
-			for(int j = 0; j < n; j++){
+		for(int i = 0; i < numVertices; i++)
+			for(int j = 0; j < numVertices; j++){
 				if(i != j && grafo[i][j] == 0)
 					return false;
         }
 	}
 	else{
-		int x = tam_lista(n);
-		for(int i = 0; i < n; i++)
+		int x = tam_lista(numVertices);
+		for(int i = 0; i < numVertices; i++)
 			if(grafo[0][i] == 0)
 				return false;
 	}
 	return true;
 }
 
+// Função que verifica se eh uma arvore
 bool grafo_matriz::ehArvore()
 {
 	int numeroArestas = 0;
 	if(!ehConexo)
 		return false;
 	if(direcionado){
-		for(int i = 0; i < n; i++)
-			for(int j = 0; j < n; j++)
+		for(int i = 0; i < numVertices; i++)
+			for(int j = 0; j < numVertices; j++)
 				if(j != i && grafo[i][j] != 0)
 					numeroArestas++;
 	}
 	else{
-		for(int i = 0; i < tam_lista(n); i++)
+		for(int i = 0; i < tam_lista(numVertices); i++)
 			if(grafo[0][i] != 0)
 				numeroArestas++;
 	}
@@ -259,6 +239,7 @@ bool grafo_matriz::ehArvore()
 	return true;
 }
 
+// Função auxiliar para verificar se tem ciclo
 bool grafo_matriz::temCiclo()
 {
 

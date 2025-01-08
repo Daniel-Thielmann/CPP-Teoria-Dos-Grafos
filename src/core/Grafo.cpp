@@ -2,8 +2,11 @@
 #include <iostream>
 
 // Construtor
-Grafo::Grafo(int numVertices) {
+Grafo::Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado) {
     this->numVertices = numVertices;
+    this->ponderadoVertices = ponderadoVertices;
+	this->ponderadosArestas = ponderadosArestas;
+	this->direcionado = direcionado;
 
     // Alocação dinâmica da matriz de adjacências
     adjacencias = new int*[numVertices];
@@ -57,4 +60,28 @@ int Grafo::getGrau(int vertice) {
         }
     }
     return grau;
+}
+
+// Retorna se as arestas tem direção
+bool Grafo::ehDirecionado()
+{
+	return direcionado;
+}
+
+// Retorna se os vertices tem peso
+bool Grafo::verticePonderado()
+{
+	return ponderadoVertices;
+}
+
+// Retorna se as arestas têm peso
+bool Grafo::arestaPonderada()
+{
+	return ponderadosArestas;
+}
+
+// Retorna o número de elementos
+int Grafo::get_ordem()
+{
+	return numVertices;
 }
