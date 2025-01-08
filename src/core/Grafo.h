@@ -12,7 +12,8 @@ protected:
 
 public:
     Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado);  // Construtor
-    virtual ~Grafo();        // Destrutor
+    Grafo(int numVertices);
+    virtual ~Grafo(); // Destrutor
 
     void adicionarAresta(int origem, int destino);
     void removerAresta(int origem, int destino);

@@ -15,6 +15,16 @@ Grafo::Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bo
     }
 }
 
+Grafo::Grafo(int numVertices) {
+    this->numVertices = numVertices;
+
+    // Alocação dinâmica da matriz de adjacências
+    adjacencias = new int*[numVertices];
+    for (int i = 0; i < numVertices; ++i) {
+        adjacencias[i] = new int[numVertices]();
+    }
+}
+
 // Destrutor
 Grafo::~Grafo() {
     for (int i = 0; i < numVertices; ++i) {

@@ -1,13 +1,11 @@
 #ifndef GRAFO_MATRIZ_H
 #define GRAFO_MATRIZ_H
 
-#include "Grafo.h"
+#include "../core/Grafo.h"
 #include <iostream>
 using namespace std;
 
-
-
-class grafo_matriz : Grafo
+class grafo_matriz : public Grafo
 {
 private:
 
@@ -31,4 +29,4 @@ public:
 	
 };
 
-#endif
+#endif // GRAFO_MATRIZ_H

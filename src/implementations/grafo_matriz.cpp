@@ -3,7 +3,7 @@
 
 using namespace std;
 
-grafo_matriz::grafo_matriz(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado, int pesoVerticesices[]) : Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado)
+grafo_matriz::grafo_matriz(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado, int pesoVerticesices[]) : Grafo(numVertices, ponderadoVertices, ponderadosArestas, direcionado)
 {
 
 	if (direcionado == 1)  // caso grafo direcionado aloca uma matriz com o duplo ponteiro grafo e prenche com 0 para cada aresta por padr�o
@@ -221,7 +221,7 @@ bool grafo_matriz::ehCompleto()
 bool grafo_matriz::ehArvore()
 {
 	int numeroArestas = 0;
-	if(!ehConexo)
+	if(!ehConexo())
 		return false;
 	if(direcionado){
 		for(int i = 0; i < numVertices; i++)
