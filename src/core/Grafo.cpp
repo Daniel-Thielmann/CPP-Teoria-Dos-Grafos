@@ -5,8 +5,8 @@
 Grafo::Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado) {
     this->numVertices = numVertices;
     this->ponderadoVertices = ponderadoVertices;
-	this->ponderadosArestas = ponderadosArestas;
-	this->direcionado = direcionado;
+    this->ponderadosArestas = ponderadosArestas;
+    this->direcionado = direcionado;
 
     // Alocação dinâmica da matriz de adjacências
     adjacencias = new int*[numVertices];
@@ -37,7 +37,9 @@ Grafo::~Grafo() {
 void Grafo::adicionarAresta(int origem, int destino) {
     if (origem >= 0 && origem < numVertices && destino >= 0 && destino < numVertices) {
         adjacencias[origem][destino] = 1;
-        adjacencias[destino][origem] = 1;
+        if (!direcionado) {
+            adjacencias[destino][origem] = 1;
+        }
     }
 }
 
@@ -45,7 +47,9 @@ void Grafo::adicionarAresta(int origem, int destino) {
 void Grafo::removerAresta(int origem, int destino) {
     if (origem >= 0 && origem < numVertices && destino >= 0 && destino < numVertices) {
         adjacencias[origem][destino] = 0;
-        adjacencias[destino][origem] = 0;
+        if (!direcionado) {
+            adjacencias[destino][origem] = 0;
+        }
     }
 }
 
@@ -72,26 +76,10 @@ int Grafo::getGrau(int vertice) {
     return grau;
 }
 
-// Retorna se as arestas tem direção
-bool Grafo::ehDirecionado()
-{
-	return direcionado;
-}
-
-// Retorna se os vertices tem peso
-bool Grafo::verticePonderado()
-{
-	return ponderadoVertices;
-}
-
-// Retorna se as arestas têm peso
-bool Grafo::arestaPonderada()
-{
-	return ponderadosArestas;
-}
-
-// Retorna o número de elementos
-int Grafo::get_ordem()
-{
-	return numVertices;
+// Retorna se existe uma aresta entre dois vértices
+bool Grafo::existeAresta(int origem, int destino) const {
+    if (origem >= 0 && origem < numVertices && destino >= 0 && destino < numVertices) {
+        return adjacencias[origem][destino] != 0;
+    }
+    return false;
 }

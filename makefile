@@ -1,6 +1,6 @@
 # Compilador e flags
 CXX = g++
-CXXFLAGS = -Wall -std=c++17 -g
+CXXFLAGS = -Wall -std=c++17 -g -I$(IMPL_DIR)
 
 # Diretórios
 SRC_DIR = src
@@ -26,8 +26,8 @@ TESTS = $(TEST_DIR)/teste_eh_bipartido.cpp \
         $(TEST_DIR)/teste_todos.cpp
 
 # Objetos
-OBJ = $(SRC:.cpp=.o) $(MAIN:.cpp=.o)
-TEST_OBJ = $(SRC:.cpp=.o) $(TESTS:.cpp=.o)
+OBJ = $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC) $(MAIN))
+TEST_OBJ = $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC) $(TESTS))
 
 # Binaries
 BIN_MAIN = $(BIN_DIR)/programa.exe
@@ -47,12 +47,10 @@ test: $(TEST_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $(BIN_TEST)
 
 # Regra genérica para compilar arquivos .cpp em .o
-%.o: %.cpp
+$(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Limpeza dos arquivos gerados
 clean:
-	rm -f $(OBJ) $(TEST_OBJ) $(BIN_MAIN) $(BIN_TEST)
-
-CXXFLAGS = -Wall -std=c++17 -g -I$(IMPL_DIR)
+	rm -rf $(OBJ_DIR) $(BIN_MAIN) $(BIN_TEST)
