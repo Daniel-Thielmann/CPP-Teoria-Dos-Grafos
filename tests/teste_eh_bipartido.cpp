@@ -1,10 +1,10 @@
-#include <iostream>
 #include "../src/implementations/eh_bipartido.h"
+#include <iostream>
 
 void testeEhBipartido() {
     GrafoBipartido grafo(4);
 
-    // Adiciona arestas para um grafo bipartido
+    // Adiciona arestas para criar um grafo bipartido
     grafo.adicionarAresta(0, 1);
     grafo.adicionarAresta(1, 2);
     grafo.adicionarAresta(2, 3);
