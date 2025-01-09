@@ -1,8 +1,6 @@
 #include "n_conexo.h"
 
-GrafoConexo::GrafoConexo(int numVertices) : Grafo(numVertices) {
-    // Construtor vazio, mas necessário para inicializar a classe base
-}
+GrafoConexo::GrafoConexo(int numVertices) : Grafo(numVertices) {}
 
 int GrafoConexo::nConexo() {
     int numVertices = getNumVertices();  // Obtém o número de vértices
