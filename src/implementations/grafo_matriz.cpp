@@ -76,43 +76,44 @@ grafo_matriz :: ~grafo_matriz()
 
 void grafo_matriz::adiciona_aresta(int a, int b, int c) // 'a' vertice de origem 'b' vertice de destino 'c' peso da aresta
 {
-	if (direcionado == 1)
+	if (a != b)
 	{
-		if (ponderadosArestas == 1)
+		if (direcionado == 1)
 		{
-			grafo[a - 1][b - 1] = c;
-		}
-		else
-		{
-			grafo[a - 1][b - 1] = 1;
-		}
-	}
-	else
-	{
-		if(a == b)
-			grafo[0][a + tam_lista(b - 1) - 1] = 0;		// Previne laços
-
-		if (ponderadosArestas == 1)
-		{
-			if (a < b)
+			if (ponderadosArestas == 1)
 			{
-				grafo[0][a + tam_lista(b - 1) - 1] = c;
+				grafo[a - 1][b - 1] = c;
 			}
 			else
 			{
-				grafo[0][b + tam_lista(a - 1) - 1] = c;
+				grafo[a - 1][b - 1] = 1;
 			}
 		}
-
 		else
 		{
-			if (a < b)
+
+			if (ponderadosArestas == 1)
 			{
-				grafo[0][a + tam_lista(b - 1) - 1] = 1;
+				if (a < b)
+				{
+					grafo[0][a + tam_lista(b - 1) - 1] = c;
+				}
+				else
+				{
+					grafo[0][b + tam_lista(a - 1) - 1] = c;
+				}
 			}
+
 			else
 			{
-				grafo[0][b + tam_lista(a - 1) - 1] = 1;
+				if (a < b)
+				{
+					grafo[0][a + tam_lista(b - 1) - 1] = 1;
+				}
+				else
+				{
+					grafo[0][b + tam_lista(a - 1) - 1] = 1;
+				}
 			}
 		}
 	}
