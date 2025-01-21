@@ -34,7 +34,7 @@ GrafoLista::GrafoLista(const std::string& arquivo)
         adicionarAresta(origem, destino, peso);
     }
 
-    std::cout << "Número de vértices: " << numVertices << std::endl;
+    std::cout << "Numero de vertices: " << numVertices << std::endl;
 
 }
 
@@ -53,11 +53,11 @@ void GrafoLista::adicionarAresta(int origem, int destino, int peso) {
     Vertice* vDestino = vertices.encontraVertice(destino);
 
     if (!vOrigem || !vDestino) {
-        throw std::invalid_argument("Erro: vértice inexistente.");
+        throw std::invalid_argument("Erro: vertice inexistente.");
     }
 
     if (origem == destino) {
-        throw std::invalid_argument("Erro: laços não permitidos.");
+        throw std::invalid_argument("Erro: lacos nao permitidos.");
     }
 
     vOrigem->arestas.insereAresta(destino, peso);
@@ -73,7 +73,7 @@ void GrafoLista::removerAresta(int origem, int destino) {
     Vertice* vDestino = vertices.encontraVertice(destino);
 
     if (!vOrigem || !vDestino) {
-        throw std::invalid_argument("Erro: vértice inexistente.");
+        throw std::invalid_argument("Erro: vertice inexistente.");
     }
 
     vOrigem->arestas.removeAresta(destino);
@@ -85,16 +85,16 @@ void GrafoLista::removerAresta(int origem, int destino) {
 
 // Imprime o grafo
 void GrafoLista::imprimeGrafo() const {
-    std::cout << "Lista de Adjacência:\n";
+    std::cout << "Lista de Adjacencia:\n";
     NoV* noVertice = vertices.getRaiz();
     if (!noVertice) {
-        std::cout << "Lista de vértices vazia.\n";
+        std::cout << "Lista de vertices vazia.\n";
         return;
     }
 
     while (noVertice) {
         Vertice* vertice = noVertice->v;
-        std::cout << "Vértice " << vertice->id << " (Peso: " << vertice->peso << "): ";
+        std::cout << "Vertice " << vertice->id << " (Peso: " << vertice->peso << "): ";
 
         NoA* noAresta = vertice->arestas.getRaiz();
         if (!noAresta) {
@@ -152,7 +152,7 @@ bool GrafoLista::temCiclo() const {
 // Obtém o grau de um vértice
 int GrafoLista::getGrau(int vertice) const {
     if (vertice < 0 || vertice >= numVertices) {
-        throw std::invalid_argument("Índice fora do intervalo válido.");
+        throw std::invalid_argument("Indice fora do intervalo valido.");
     }
     int grau = 0;
     for (int i = 0; i < numVertices; ++i) {

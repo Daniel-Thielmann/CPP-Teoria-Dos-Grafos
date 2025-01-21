@@ -8,7 +8,7 @@ int GrafoGrau::getGrau(int vertice) {
     int numVertices = getNumVertices();
 
     if (vertice < 0 || vertice >= numVertices) {
-        std::cerr << "Erro: vértice inválido." << std::endl;
+        std::cerr << "Erro: vertice invalido." << std::endl;
         return -1; // Retorna -1 para indicar erro
     }
 

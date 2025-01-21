@@ -25,9 +25,9 @@ int main() {
             std::cout << "As arestas não são ponderadas." << std::endl;
         }
        if(ehArvore(grafo) == true) {
-            std::cout << "O grafo é uma árvore." << std::endl;
+            std::cout << "O grafo é uma arvore." << std::endl;
         } else {
-            std::cout << "O grafo não é uma árvore." << std::endl;
+            std::cout << "O grafo não é uma arvore." << std::endl;
         }
         if(grafo.ehConexo() == true) {
             std::cout << "O grafo é conexo." << std::endl;

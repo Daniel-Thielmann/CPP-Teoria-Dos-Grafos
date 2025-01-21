@@ -41,7 +41,7 @@ A classe abstrata `grafo` fornece as seguintes funcionalidades que são herdadas
 
   - Os comandos devem ser executados via terminal, conforme os seguintes casos:
 
-  1. Compilar o Programa Principal localizado em /src/main.cpp: mingw32-make main
+  1. Compilar o Programa Principal localizado em /src/main.cpp: mingw32-make
      1.1 Execute o programa: .\bin\programa.exe
 
   2. Compilar e Executar os Testes localizados em /tests: mingw32-make test

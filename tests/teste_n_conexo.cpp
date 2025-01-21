@@ -17,7 +17,7 @@ void testeNConexo() {
 
     // Exibe o resultado do teste
     std::cout << "Teste n_conexo:\n";
-    std::cout << "Número de componentes conexas: " << resultado << std::endl;
+    std::cout << "Numero de componentes conexas: " << resultado << std::endl;
     std::cout << "Resultado esperado: " << esperado << std::endl;
     std::cout << "Teste " << (resultado == esperado ? "PASSOU" : "FALHOU") << "\n";
 }

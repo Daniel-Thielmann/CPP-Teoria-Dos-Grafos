@@ -31,7 +31,7 @@ int main() {
         std::cout << "\nPropriedades do Grafo (Matriz de Adjacencia):" << std::endl;
         std::cout << "O grafo eh conexo? " << (grafoMatriz.ehConexo() ? "Sim" : "Nao") << std::endl;
         std::cout << "O grafo eh completo? " << (grafoMatriz.ehCompleto() ? "Sim" : "Nao") << std::endl;
-        std::cout << "O grafo eh uma árvore? " << (grafoMatriz.ehArvore() ? "Sim" : "Nao") << std::endl;
+        std::cout << "O grafo eh uma arvore? " << (grafoMatriz.ehArvore() ? "Sim" : "Nao") << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Erro: " << e.what() << std::endl;
         return 1;

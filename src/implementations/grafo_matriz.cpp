@@ -70,7 +70,7 @@ void GrafoMatriz::imprimeGrafo() const {
 // Obtém o grau de um vértice
 int GrafoMatriz::getGrau(int vertice) const {
     if (vertice < 0 || vertice >= numVertices) {
-        throw invalid_argument("Índice fora do intervalo válido.");
+        throw invalid_argument("Indice fora do intervalo valido.");
     }
     int grau = 0;
     for (int i = 0; i < numVertices; ++i) {

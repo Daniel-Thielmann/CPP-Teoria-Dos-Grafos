@@ -46,7 +46,7 @@ void Grafo::adicionarAresta(int origem, int destino, int peso) {
 // Remove uma aresta
 void Grafo::removerAresta(int origem, int destino) {
     if (origem < 0 || origem >= numVertices || destino < 0 || destino >= numVertices) {
-        throw std::out_of_range("Índice de vértice fora dos limites.");
+        throw std::out_of_range("Índice de vertice fora dos limites.");
     }
     adjacencias[origem][destino] = 0;
     if (!direcionado) {
@@ -67,7 +67,7 @@ void Grafo::imprimeGrafo() const {
 // Obtém o grau de um vértice
 int Grafo::getGrau(int vertice) const {
     if (vertice < 0 || vertice >= numVertices) {
-        throw std::out_of_range("Índice de vértice fora dos limites.");
+        throw std::out_of_range("Índice de vertice fora dos limites.");
     }
 
     int grau = 0;
