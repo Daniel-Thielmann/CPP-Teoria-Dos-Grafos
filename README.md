@@ -44,8 +44,8 @@ A classe abstrata `grafo` fornece as seguintes funcionalidades que são herdadas
   1. Compilar o Programa Principal localizado em /src/main.cpp: mingw32-make
      1.1 Execute o programa: .\bin\programa.exe
 
-  2. Compilar e Executar os Testes localizados em /tests: mingw32-make test
-     2.1 Execute todos os testes: .\bin\teste_todos.exe
+  2. Compilar e Executar os Testes localizados em /tests: mingw32-make
+     2.1 Execute as funções feitas pelo Daniel: ./bin/teste_todos_daniel.exe
 
   3. Limpar os arquivos gerados:
      mingw32-make clean

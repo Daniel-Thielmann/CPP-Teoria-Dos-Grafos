@@ -1,5 +1,6 @@
+#include "../implementations/n_conexo.h"
 #include <iostream>
-#include "../src/implementations/n_conexo.h"
+
 
 void testeNConexo() {
     // Cria um grafo com 6 vértices

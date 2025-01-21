@@ -1,4 +1,4 @@
-#include "../src/implementations/eh_bipartido.h"
+#include "../implementations/eh_bipartido.h"
 #include <iostream>
 
 void testeEhBipartido() {

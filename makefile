@@ -6,35 +6,43 @@ CXXFLAGS = -Wall -std=c++17 -g
 SRC_DIR = src
 CORE_DIR = $(SRC_DIR)/core
 IMPL_DIR = $(SRC_DIR)/implementations
-OBJ_DIR = obj
-BIN_DIR = bin
+TEST_DIR = $(SRC_DIR)/tests
 
 # Arquivos de origem e objetos
 SRC = $(CORE_DIR)/Grafo.cpp \
       $(IMPL_DIR)/grafo_lista.cpp \
       $(IMPL_DIR)/grafo_matriz.cpp \
       $(IMPL_DIR)/ListaV.cpp \
-      $(IMPL_DIR)/ListaA.cpp
-OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-MAIN = $(SRC_DIR)/main.cpp
-MAIN_OBJ = $(MAIN:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+      $(IMPL_DIR)/ListaA.cpp \
+      $(IMPL_DIR)/eh_bipartido.cpp \
+      $(IMPL_DIR)/get_grau.cpp \
+      $(IMPL_DIR)/n_conexo.cpp
+
+TEST_SRC = $(TEST_DIR)/teste_eh_bipartido.cpp \
+           $(TEST_DIR)/teste_get_grau.cpp \
+           $(TEST_DIR)/teste_n_conexo.cpp
+
+MAIN_APP = $(SRC_DIR)/main.cpp
+MAIN_TEST = $(TEST_DIR)/teste_todos_daniel.cpp
 
 # Binário final
-BIN = $(BIN_DIR)/programa.exe
+BIN_DIR = bin
+BIN_APP = $(BIN_DIR)/programa.exe
+BIN_TEST = $(BIN_DIR)/teste_todos_daniel.exe
 
-# Regra padrão
-all: $(BIN)
+# Regras
+all: $(BIN_APP) $(BIN_TEST)
 
-# Regra para criar o executável
-$(BIN): $(OBJ) $(MAIN_OBJ)
+# Regra para o programa principal
+$(BIN_APP): $(SRC) $(MAIN_APP)
 	mkdir -p $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Regra genérica para criar objetos
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+# Regra para os testes
+$(BIN_TEST): $(SRC) $(MAIN_TEST) $(TEST_SRC)
+	mkdir -p $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Limpeza de arquivos compilados
+# Limpeza
 clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
+	rm -rf obj $(BIN_DIR)
