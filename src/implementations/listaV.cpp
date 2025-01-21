@@ -1,4 +1,5 @@
 #include "listaV.h"
+#include "listaA.h"
 
 ListaV::ListaV() : raiz(nullptr) {} // Construtor
 

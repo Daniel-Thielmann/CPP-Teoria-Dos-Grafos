@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include "vertice.h"
 #include "listaA.h"
+#include "listaV.h"
 
 class GrafoLista : public Grafo {
 private:

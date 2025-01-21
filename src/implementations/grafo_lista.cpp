@@ -1,7 +1,11 @@
 #include "grafo_lista.h"
 #include <fstream>
 #include <stdexcept>
+#include <stdexcept>
 #include <iostream>
+#include "listaA.h"
+#include "listaV.h"
+
 
 GrafoLista::GrafoLista(const std::string& arquivo)
     : Grafo(0, false, false, false) {
@@ -112,7 +116,7 @@ bool GrafoLista::temCiclo() const {
 // Obtém o grau de um vértice
 int GrafoLista::getGrau(int vertice) const {
     if (vertice < 0 || vertice >= numVertices) {
-        throw invalid_argument("Índice fora do intervalo válido.");
+        throw std::invalid_argument("Índice fora do intervalo válido.");
     }
     int grau = 0;
     for (int i = 0; i < numVertices; ++i) {
