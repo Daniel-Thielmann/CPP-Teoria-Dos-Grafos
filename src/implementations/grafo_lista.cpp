@@ -6,13 +6,38 @@
 #include "listaA.h"
 #include "listaV.h"
 
-
 GrafoLista::GrafoLista(const std::string& arquivo)
     : Grafo(0, false, false, false) {
-    for (int i = 0; i < numVertices; ++i) {
-        // Código do loop aqui
+    std::ifstream file(arquivo);
+    if (!file.is_open()) {
+        throw std::runtime_error("Erro ao abrir o arquivo: " + arquivo);
     }
+
+    // Lê os vértices e arestas
+    file >> numVertices >> direcionado >> ponderadoVertices >> ponderadosArestas;
+
+    for (int i = 0; i < numVertices; ++i) {
+        int peso = ponderadoVertices ? 0 : 1;
+        if (ponderadoVertices) {
+            file >> peso;
+        }
+        Vertice* vertice = new Vertice(i + 1, peso);
+        vertices.inserirVertice(vertice);
+    }
+
+    int origem, destino, peso;
+    while (file >> origem >> destino) {
+        peso = ponderadosArestas ? 0 : 1;
+        if (ponderadosArestas) {
+            file >> peso;
+        }
+        adicionarAresta(origem, destino, peso);
+    }
+
+    std::cout << "Número de vértices: " << numVertices << std::endl;
+
 }
+
 
 
 GrafoLista::~GrafoLista() {
@@ -62,11 +87,20 @@ void GrafoLista::removerAresta(int origem, int destino) {
 void GrafoLista::imprimeGrafo() const {
     std::cout << "Lista de Adjacência:\n";
     NoV* noVertice = vertices.getRaiz();
+    if (!noVertice) {
+        std::cout << "Lista de vértices vazia.\n";
+        return;
+    }
+
     while (noVertice) {
         Vertice* vertice = noVertice->v;
         std::cout << "Vértice " << vertice->id << " (Peso: " << vertice->peso << "): ";
 
         NoA* noAresta = vertice->arestas.getRaiz();
+        if (!noAresta) {
+            std::cout << "Sem arestas.";
+        }
+
         while (noAresta) {
             std::cout << "-> " << noAresta->a->id << " (Peso: " << noAresta->a->peso << ") ";
             noAresta = noAresta->proximo;
@@ -75,6 +109,8 @@ void GrafoLista::imprimeGrafo() const {
         noVertice = noVertice->proximo;
     }
 }
+
+
 
 // Verifica se o grafo é completo
 bool GrafoLista::ehCompleto() const {

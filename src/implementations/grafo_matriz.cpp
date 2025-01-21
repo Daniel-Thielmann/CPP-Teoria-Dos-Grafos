@@ -58,7 +58,7 @@ void GrafoMatriz::removerAresta(int origem, int destino) {
 
 // Imprime o grafo
 void GrafoMatriz::imprimeGrafo() const {
-    cout << "Matriz de Adjacência:\n";
+    cout << "Matriz de Adjacencia:\n";
     for (int i = 0; i < numVertices; ++i) {
         for (int j = 0; j < numVertices; ++j) {
             cout << grafo[i][j] << " ";

@@ -5,16 +5,17 @@
 int main() {
     try {
         // Criando um grafo utilizando a representação em lista de adjacência
-        std::cout << "==== Representação com Lista de Adjacência ====" << std::endl;
+        std::cout << "==== Representacao com Lista de Adjacencia ====" << std::endl;
         GrafoLista grafoLista("grafo.txt"); // Lê o grafo a partir de um arquivo
+        
         grafoLista.imprimeGrafo();
 
-        std::cout << "\nPropriedades do Grafo (Lista de Adjacência):" << std::endl;
-        std::cout << "O grafo é conexo? " << (grafoLista.ehConexo() ? "Sim" : "Não") << std::endl;
-        std::cout << "O grafo é completo? " << (grafoLista.ehCompleto() ? "Sim" : "Não") << std::endl;
+        std::cout << "\nPropriedades do Grafo (Lista de Adjacencia):" << std::endl;
+        std::cout << "O grafo eh conexo? " << (grafoLista.ehConexo() ? "Sim" : "Nao") << std::endl;
+        std::cout << "O grafo eh completo? " << (grafoLista.ehCompleto() ? "Sim" : "Nao") << std::endl;
 
         // Criando um grafo utilizando a representação em matriz de adjacência
-        std::cout << "\n==== Representação com Matriz de Adjacência ====" << std::endl;
+        std::cout << "\n==== Representacao com Matriz de Adjacencia ====" << std::endl;
         int pesosVertices[] = {1, 2, 3, 4, 5, 6}; // Exemplo de pesos para vértices
         GrafoMatriz grafoMatriz(6, false, false, false, pesosVertices);
 
@@ -27,10 +28,10 @@ int main() {
 
         grafoMatriz.imprimeGrafo();
 
-        std::cout << "\nPropriedades do Grafo (Matriz de Adjacência):" << std::endl;
-        std::cout << "O grafo é conexo? " << (grafoMatriz.ehConexo() ? "Sim" : "Não") << std::endl;
-        std::cout << "O grafo é completo? " << (grafoMatriz.ehCompleto() ? "Sim" : "Não") << std::endl;
-        std::cout << "O grafo é uma árvore? " << (grafoMatriz.ehArvore() ? "Sim" : "Não") << std::endl;
+        std::cout << "\nPropriedades do Grafo (Matriz de Adjacencia):" << std::endl;
+        std::cout << "O grafo eh conexo? " << (grafoMatriz.ehConexo() ? "Sim" : "Nao") << std::endl;
+        std::cout << "O grafo eh completo? " << (grafoMatriz.ehCompleto() ? "Sim" : "Nao") << std::endl;
+        std::cout << "O grafo eh uma árvore? " << (grafoMatriz.ehArvore() ? "Sim" : "Nao") << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Erro: " << e.what() << std::endl;
         return 1;

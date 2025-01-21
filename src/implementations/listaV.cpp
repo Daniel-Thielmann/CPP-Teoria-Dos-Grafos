@@ -1,5 +1,6 @@
 #include "listaV.h"
 #include "listaA.h"
+#include <stdexcept>
 
 ListaV::ListaV() : raiz(nullptr) {} // Construtor
 
@@ -12,11 +13,19 @@ ListaV::~ListaV() { // Destrutor
     }
 }
 
-void ListaV::inserirVertice(Vertice* vertice) { // Insere um vértice na lista
+void ListaV::inserirVertice(Vertice* vertice) {
+    if (encontraVertice(vertice->id)) {
+        throw std::invalid_argument("Vértice já existe!");
+    }
     NoV* novo = new NoV(vertice);
     novo->proximo = raiz;
     raiz = novo;
 }
+
+bool ListaV::existeVertice(int id) const {
+    return encontraVertice(id) != nullptr;
+}
+
 
 Vertice* ListaV::encontraVertice(int id) const { // Encontra um vértice na lista
     NoV* atual = raiz;
@@ -42,3 +51,4 @@ int ListaV::tamanho() const { // Retorna o tamanho da lista
     }
     return count;
 }
+

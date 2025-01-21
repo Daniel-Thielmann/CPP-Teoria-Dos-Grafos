@@ -1,7 +1,6 @@
 #include "listaA.h"
-#include "listaA.h"
 #include <cstdlib>
-
+#include <stdexcept>
 
 ListaA::ListaA() : raiz(nullptr) {} // Construtor da lista de arestas
 
@@ -15,28 +14,27 @@ ListaA::~ListaA() { // Destrutor da lista de arestas
 }
 
 
- void ListaA::insereAresta(int destino, int peso) { // Método para inserir uma aresta
-        Aresta* novaAresta = new Aresta(destino, peso);
-        NoA* novoNo = new NoA(novaAresta);
-        novoNo->proximo = raiz;
-        raiz = novoNo;
-    }
-
-    // Método para verificar se existe uma aresta (com id)
-    bool ListaA::existeAresta(int idDestino) {
-        NoA* atual = raiz;
-        while (atual != nullptr) {
-            if (atual->a->id == idDestino) {
-                return true;
-            }
-            atual = atual->proximo;
+ bool ListaA::existeAresta(int idDestino) const { // Adicionado 'const'
+    NoA* atual = raiz;
+    while (atual != nullptr) {
+        if (atual->a->id == idDestino) {
+            return true;
         }
-        return false;
+        atual = atual->proximo;
     }
-
-   NoA* ListaA::getRaiz() const { // Método para retornar a raiz da lista
-    return raiz; // Retorna a raiz da lista
+    return false;
 }
+
+void ListaA::insereAresta(int destino, int peso) {
+    if (existeAresta(destino)) {
+        throw std::invalid_argument("Aresta já existe!");
+    }
+    Aresta* novaAresta = new Aresta(destino, peso);
+    NoA* novoNo = new NoA(novaAresta);
+    novoNo->proximo = raiz;
+    raiz = novoNo;
+}
+
 
 int ListaA::tamanho() const { // Método para retornar o tamanho da lista
     int count = 0;
@@ -66,4 +64,8 @@ void ListaA::removeAresta(int id) {
         anterior = atual;
         atual = atual->proximo;
     }
+}
+
+NoA* ListaA::getRaiz() const {
+    return raiz; // Retorna a raiz da lista
 }
