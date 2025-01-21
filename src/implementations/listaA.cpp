@@ -47,3 +47,23 @@ int ListaA::tamanho() const { // Método para retornar o tamanho da lista
     }
     return count;
 }
+
+void ListaA::removeAresta(int id) {
+    NoA* atual = raiz;
+    NoA* anterior = nullptr;
+
+    while (atual) {
+        if (atual->a->id == id) {
+            if (anterior) {
+                anterior->proximo = atual->proximo;
+            } else {
+                raiz = atual->proximo;
+            }
+            delete atual->a;
+            delete atual;
+            return;
+        }
+        anterior = atual;
+        atual = atual->proximo;
+    }
+}

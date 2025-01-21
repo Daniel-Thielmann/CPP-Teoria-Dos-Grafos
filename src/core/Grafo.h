@@ -1,41 +1,31 @@
-#ifndef GRAFO_H 
+#ifndef GRAFO_H
 #define GRAFO_H
 
 class Grafo {
-protected:
-    int** adjacencias; // Matriz de adjacências
-    int numVertices;   // Número de vértices
+private:
+    int** grafo;
 
-    bool ponderadoVertices; // Peso dos vértices: 0 = não ponderados, 1 = ponderados
-    bool ponderadosArestas; // Peso das arestas: 0 = não ponderadas, 1 = ponderadas
-    bool direcionado;       // Direcionamento: 0 = não direcionado, 1 = direcionado
+protected:
+    int numVertices;
+    bool ponderadoVertices;
+    bool ponderadosArestas;
+    bool direcionado;
+    int** adjacencias; // Matriz de adjacência
+    void inicializarMatriz();
 
 public:
-    Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado);  // Construtor
-    Grafo(int numVertices);
-    virtual ~Grafo(); // Destrutor
+    Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado);
+    virtual ~Grafo();
 
-    void adicionarAresta(int origem, int destino);
-    void removerAresta(int origem, int destino);
-    void imprimirGrafo();
-    int getGrau(int vertice);
-
-    bool ehDirecionado();
-    bool verticePonderado();
-    bool arestaPonderada();
-    int get_ordem();
-
-    virtual void imprime_grafo();
-    virtual bool ehConexo();
-    virtual bool ehArvore();
-    virtual bool ehCompleto();
-
-    // Métodos getters
-    int** getAdjacencias() const { return adjacencias; }
-    int getNumVertices() const { return numVertices; }
-
-    // Método para verificar se existe uma aresta
-    bool existeAresta(int origem, int destino) const;
+    virtual void adicionarAresta(int origem, int destino, int peso = 1) = 0;
+    virtual void removerAresta(int origem, int destino) = 0;
+    virtual void imprimeGrafo() const = 0; 
+    virtual int getGrau(int vertice) const = 0;
+    virtual bool existeAresta(int origem, int destino) const = 0;
+    virtual bool ehConexo() const = 0;
+    virtual bool ehCompleto() const = 0;
+    virtual bool ehArvore() const = 0;
+    virtual bool temCiclo() const = 0;
 };
 
 #endif // GRAFO_H
