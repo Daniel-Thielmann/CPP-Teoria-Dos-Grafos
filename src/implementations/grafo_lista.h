@@ -22,6 +22,13 @@ public:
 
     void adicionarAresta(int origem, int destino, int peso = 1) override;
     void removerAresta(int origem, int destino) override;
+
+    void deleta_no(int id); 
+    void deleta_aresta2(int origem, int destino);
+    void novo_no(int id, int peso);
+    void deleta_aresta(int id); 
+    void nova_aresta(int origem, int destino, int peso, bool direcionado); 
+
     void imprimeGrafo() const override;
     int getGrau(int vertice) const override;
     bool existeAresta(int origem, int destino) const override;
@@ -29,6 +36,7 @@ public:
     bool ehCompleto() const override;
     bool ehArvore() const override;
     bool temCiclo() const override;
+   
 };
 
 #endif // GRAFO_LISTA_H
