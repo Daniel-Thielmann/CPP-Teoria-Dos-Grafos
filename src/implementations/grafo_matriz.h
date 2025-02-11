@@ -25,6 +25,8 @@ public:
 	bool ehArvore() override;
 	bool temCiclo();
 	bool ehCompleto() override;
+	int* getArestas(int id) const override;
+
 
 	
 };

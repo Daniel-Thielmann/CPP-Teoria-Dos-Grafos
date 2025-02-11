@@ -292,3 +292,27 @@ void GrafoLista::dfsConexao(Vertice* vertice, bool* visitado) const {
 bool GrafoLista::vertice_ponderado() const{     // Verifica se os vertices do grafo tem peso
     return ponderadoVertices;   // Retorna o valor armazenado ao carregar o grafo
 }
+
+int* GrafoLista::getArestas(int id) const {
+    Vertice* vertice = vertices.encontraVertice(id);
+    NoA* noAresta = vertice->arestas.getRaiz();
+    if (!noAresta) {
+        return null;
+    }
+    // Contar quantas arestas existem para alocar espaço
+    int count = 0;
+    NoA* temp = noAresta;
+    while (temp) {
+        count++;
+        temp = temp->proximo;
+    }
+    // Criar um array dinâmico para armazenar os ids dos vértices adjacentes
+    int* adjacentes = new int[count];
+    // Preencher o array com os ids dos vértices conectados
+    temp = noAresta; // Resetar ponteiro para o início da lista
+    for (int i = 0; i < count; i++) {
+        adjacentes[i] = temp->a->id;
+        temp = temp->proximo;
+    }
+    return adjacentes;
+}

@@ -24,11 +24,14 @@ public:
 	bool verticePonderado();
 	bool arestaPonderada();
     int get_ordem();
+    int dfsMenorCaminho(int atual, int destino, bool visitado[], int distanciaAtual);
+    int maiorMenorCaminho(int *inicio, int *fim);
 
 	virtual void imprime_grafo();
 	virtual bool ehConexo();
 	virtual bool ehArvore();
 	virtual bool ehCompleto();
+    virtual int* getArestas(int id) const;
 
     // Métodos getters
     int** getAdjacencias() const { return adjacencias; }
