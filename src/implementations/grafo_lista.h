@@ -32,6 +32,7 @@ public:
     bool temCicloNaoDirecionado() const; // Verifica se o grafo nao direcionado contém ciclos
     bool ehDirecionado() const; // Verifica se o grafo é direcionado
     bool vertice_ponderado() const; // Verifica se o grafo tem vertices com pesos
+    int* getArestas(int id) const;
 
 
 private:

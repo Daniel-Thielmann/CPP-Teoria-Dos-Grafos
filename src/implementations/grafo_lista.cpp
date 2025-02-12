@@ -228,4 +228,4 @@ int* GrafoLista::getArestas(int id) const {
     }
     return adjacentes;
 }
-}
+
