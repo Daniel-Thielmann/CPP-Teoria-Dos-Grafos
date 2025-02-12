@@ -1,18 +1,20 @@
+// grafo_lista.h
 #ifndef GRAFO_LISTA_H
 #define GRAFO_LISTA_H
 
+#include "../core/Grafo.h"
 #include <string>
+#include "listaV.h" // Inclua o cabeçalho que define ListaV
+#include <stdexcept>
 #include "vertice.h"
+#include "listaA.h"
 #include "listaV.h"
 
-using namespace std;
-
-class GrafoLista { // Classe que representa um grafo usando listas 
+class GrafoLista : public Grafo {
 private:
-    ListaV vertices;          // Lista de vértices
-    bool direcionado;         // Indica se o grafo é direcionado
-    bool ponderadoVertices;   // Indica se os vértices têm peso
-    bool ponderadoArestas;    // Indica se as arestas têm peso
+    ListaV vertices; // Lista de vértices
+    int** grafo; // Matriz de adjacência
+    void dfsConexao(Vertice* vertice, bool* visitado) const;
 
 public:
     GrafoLista(string nomeArquivo); // Construtor que carrega o grafo de um arquivo
@@ -30,7 +32,6 @@ public:
     bool temCicloNaoDirecionado() const; // Verifica se o grafo nao direcionado contém ciclos
     bool ehDirecionado() const; // Verifica se o grafo é direcionado
     bool vertice_ponderado() const; // Verifica se o grafo tem vertices com pesos
-    int* getArestas(int id) const;
 
 
 private:

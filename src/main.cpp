@@ -1,61 +1,41 @@
 #include <iostream>
-#include "./core/grafo.h"
-#include "./implementations/eh_bipartido.h"
-#include "./implementations/n_conexo.h"
-#include "./implementations/get_grau.h"
+#include "./implementations/grafo_lista.h"
+#include "./implementations/grafo_matriz.h"
 
 int main() {
-    // Criação de um grafo com 6 vértices
-    Grafo grafo(6);
+    try {
+        // Criando um grafo utilizando a representação em lista de adjacência
+        std::cout << "==== Representacao com Lista de Adjacencia ====" << std::endl;
+        GrafoLista grafoLista("grafo.txt"); // Lê o grafo a partir de um arquivo
+        
+        grafoLista.imprimeGrafo();
 
-    // Adicionando arestas ao grafo
-    grafo.adicionarAresta(0, 1);
-    grafo.adicionarAresta(1, 2);
-    grafo.adicionarAresta(2, 3);
-    grafo.adicionarAresta(3, 4);
-    grafo.adicionarAresta(4, 5);
+        std::cout << "\nPropriedades do Grafo (Lista de Adjacencia):" << std::endl;
+        std::cout << "O grafo eh conexo? " << (grafoLista.ehConexo() ? "Sim" : "Nao") << std::endl;
+        std::cout << "O grafo eh completo? " << (grafoLista.ehCompleto() ? "Sim" : "Nao") << std::endl;
 
-    // Exibindo a matriz de adjacências
-    std::cout << "Matriz de adjacencias do grafo:\n";
-    grafo.imprimirGrafo();
+        // Criando um grafo utilizando a representação em matriz de adjacência
+        std::cout << "\n==== Representacao com Matriz de Adjacencia ====" << std::endl;
+        int pesosVertices[] = {1, 2, 3, 4, 5, 6}; // Exemplo de pesos para vértices
+        GrafoMatriz grafoMatriz(6, false, false, false, pesosVertices);
 
-    // Testando se o grafo é bipartido
-    GrafoBipartido grafoBipartido(6);
-    for (int i = 0; i < 6; ++i) {
-        for (int j = 0; j < 6; ++j) {
-            if (grafo.getGrau(i) > 0) {
-                grafoBipartido.adicionarAresta(i, j);
-            }
-        }
-    }
-    std::cout << "\nO grafo eh bipartido? " << (grafoBipartido.ehBipartido() ? "Sim" : "Nao") << "\n";
+        // Adicionando arestas ao grafo
+        grafoMatriz.adicionarAresta(0, 1, 1);
+        grafoMatriz.adicionarAresta(1, 2, 1);
+        grafoMatriz.adicionarAresta(2, 3, 1);
+        grafoMatriz.adicionarAresta(3, 4, 1);
+        grafoMatriz.adicionarAresta(4, 5, 1);
 
-    // Calculando o número de componentes conexas
-    GrafoConexo grafoConexo(6);
-    for (int i = 0; i < 6; ++i) {
-        for (int j = 0; j < 6; ++j) {
-            if (grafo.getGrau(i) > 0) {
-                grafoConexo.adicionarAresta(i, j);
-            }
-        }
-    }
-    int componentes = grafoConexo.nConexo();
-    std::cout << "\nNumero de componentes conexas: " << componentes << "\n";
+        grafoMatriz.imprimeGrafo();
 
-    // Calculando o grau de cada vértice
-    GrafoGrau grafoGrau(6);
-    for (int i = 0; i < 6; ++i) {
-        for (int j = 0; j < 6; ++j) {
-            if (grafo.getGrau(i) > 0) {
-                grafoGrau.adicionarAresta(i,j);
-            }
-        }
+        std::cout << "\nPropriedades do Grafo (Matriz de Adjacencia):" << std::endl;
+        std::cout << "O grafo eh conexo? " << (grafoMatriz.ehConexo() ? "Sim" : "Nao") << std::endl;
+        std::cout << "O grafo eh completo? " << (grafoMatriz.ehCompleto() ? "Sim" : "Nao") << std::endl;
+        std::cout << "O grafo eh uma arvore? " << (grafoMatriz.ehArvore() ? "Sim" : "Nao") << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Erro: " << e.what() << std::endl;
+        return 1;
     }
 
-    std::cout << "\nGrau de cada vertice:\n";
-    for (int i = 0; i < 6; ++i) {
-        std::cout << "Vertice " << i << ": Grau = " << grafoGrau.getGrau(i) << "\n";
-    }
-
-    return 0; // Certifique-se de que a função main termina corretamente.
+    return 0;
 }

@@ -1,276 +1,220 @@
 #include "grafo_lista.h"
+#include "../core/Grafo.h"
 #include <fstream>
+#include <stdexcept>
 #include <iostream>
-#include <cstdlib>
-#include <string>
+#include "listaA.h"
+#include "listaV.h"
 
-using namespace std;
 
-// Construtor: carrega o grafo a partir de um arquivo
-GrafoLista::GrafoLista(string nomeArquivo) { 
-    
-    this->direcionado = false; // Inicializa como não direcionado
-    this->ponderadoVertices = false; // Inicializa como não ponderado
-    this->ponderadoArestas = false; // Inicializa como não ponderado
-   
-    std::ifstream arquivo(nomeArquivo);
-    if (!arquivo.is_open()) {  // Verifica se o arquivo foi aberto corretamente
-        std::cerr << "Erro ao abrir o arquivo: " << nomeArquivo << std::endl;
-        exit(1);
+GrafoLista::GrafoLista(const std::string& arquivo)
+    : Grafo(0, false, false, false) {
+    std::ifstream file(arquivo);
+    if (!file.is_open()) {
+        throw std::runtime_error("Erro ao abrir o arquivo: " + arquivo);
     }
 
-    int numVertices;
-    arquivo >> numVertices >> direcionado >> ponderadoVertices >> ponderadoArestas; // Lê o cabeçalho do arquivo
+    // Lê os vértices e arestas
+    file >> numVertices >> direcionado >> ponderadoVertices >> ponderadosArestas;
 
-    // Adiciona os vértices
-    for (int i = 0; i < numVertices; ++i) {       
-        int peso = ponderadoVertices ? 0 : 1;     // Peso padrão é 1
-        if (ponderadoVertices) {  // Se os vértices forem ponderados, leia o peso
-            arquivo >> peso;
+    for (int i = 0; i < numVertices; ++i) {
+        int peso = ponderadoVertices ? 0 : 1;
+        if (ponderadoVertices) {
+            file >> peso;
         }
-        adicionaVertice(i + 1, peso); // Adiciona vértice com ID 1, 2, 3, ...
+        Vertice* vertice = new Vertice(i + 1, peso);
+        vertices.inserirVertice(vertice);
     }
 
-    // Adiciona as arestas
     int origem, destino, peso;
-    while (arquivo >> origem >> destino) {
-        peso = ponderadoArestas ? 0 : 1; // Peso padrão é 1
-        if (ponderadoArestas) { // Se as arestas forem ponderadas, leia o peso
-            arquivo >> peso;
+    while (file >> origem >> destino) {
+        peso = ponderadosArestas ? 0 : 1;
+        if (ponderadosArestas) {
+            file >> peso;
         }
-        adicionaAresta(origem, destino, peso); // Adiciona a aresta ao grafo
+        adicionarAresta(origem, destino, peso);
     }
 
-    arquivo.close();
+    std::cout << "Numero de vertices: " << numVertices << std::endl;
+
+
+
 }
 
-// Destrutor: limpa a memória alocada
+
+
+/*GrafoLista::~GrafoLista() {
+    for (int i = 0; i < numVertices; ++i) {
+        delete[] grafo[i];
+    }
+    delete[] grafo;
+}
+*/
+
+/*
 GrafoLista::~GrafoLista() {
-    // A lista de vértices possui um destrutor que libera os recursos
+    // Se você não usa a matriz 'grafo', não tente liberá-la.
+    // Libera os vértices restantes na lista (os que não foram removidos manualmente)
+    NoV* atual = vertices.getRaiz();
+    while (atual != nullptr) {
+        NoV* proximo = atual->proximo;
+        // Note: se você já liberou alguns vértices com deleta_no, eles já não estarão na lista.
+        // Aqui, libere os que restarem.
+        delete atual->v;
+        delete atual;
+        atual = proximo;
+    }
+    // Se 'grafo' foi realmente alocado para outra finalidade, libere-o somente se for diferente de nullptr.
+    if (grafo != nullptr) {
+        for (int i = 0; i < numVertices; ++i) {
+            delete[] grafo[i];
+        }
+        delete[] grafo;
+    }
 }
 
-// Adiciona um vértice ao grafo
-void GrafoLista::adicionaVertice(int id, int peso) {
-    Vertice* novoVertice = new Vertice(id, peso);
-    vertices.inserirVertice(novoVertice);
+*/
+
+GrafoLista::~GrafoLista() {
+
 }
 
-
-void GrafoLista::adicionaAresta(int origem, int destino, int peso) { // Adiciona uma aresta ao grafo
-    // Localiza os vértices de origem e destino
+// Adiciona uma aresta
+void GrafoLista::adicionarAresta(int origem, int destino, int peso) {
     Vertice* vOrigem = vertices.encontraVertice(origem);
     Vertice* vDestino = vertices.encontraVertice(destino);
 
-    // Verifica se os vértices existem
     if (!vOrigem || !vDestino) {
-        std::cerr << "Erro: vértice de origem ou destino não encontrado." << std::endl;
-        return;
+        throw std::invalid_argument("Erro: vertice inexistente.");
     }
 
-    // Prevenção de laços
     if (origem == destino) {
-        std::cerr << "Erro: laços não são permitidos." << std::endl;
-        exit(1);
+        throw std::invalid_argument("Erro: lacos nao permitidos.");
     }
 
-    // Prevenção de multiarestas
-    NoA* noAresta = vOrigem->arestas.getRaiz();
-    while (noAresta) {
-        if (noAresta->a->id == destino) {
-            std::cerr << "Erro: multiaresta detectada entre " << origem << " e " << destino << "." << std::endl;
-            exit(1);
-        }
-        noAresta = noAresta->proximo;
-    }
-
-    // Insere a aresta no grafo
     vOrigem->arestas.insereAresta(destino, peso);
 
-    // Se o grafo não for direcionado, adiciona a aresta reversa
     if (!direcionado) {
         vDestino->arestas.insereAresta(origem, peso);
     }
 }
 
+// Remove uma aresta
+void GrafoLista::removerAresta(int origem, int destino) {
+    Vertice* vOrigem = vertices.encontraVertice(origem);
+    Vertice* vDestino = vertices.encontraVertice(destino);
 
+    if (!vOrigem || !vDestino) {
+        throw std::invalid_argument("Erro: vertice inexistente.");
+    }
 
-// Imprime o grafo no formato de lista de adjacência
+    vOrigem->arestas.removeAresta(destino);
+
+    if (!direcionado) {
+        vDestino->arestas.removeAresta(origem);
+    }
+}
+
+// Imprime o grafo
 void GrafoLista::imprimeGrafo() const {
-    NoV* noVertice = vertices.getRaiz();  // Acessa a raiz da lista de vértices
-    while (noVertice) {  // Enquanto houver vértices na lista
-        Vertice* vertice = noVertice->v;  // Pega o vértice atual
-        cout << "Vértice " << vertice->id << " (Peso: " << vertice->peso << "): ";
-
-        // Verifica se o vértice tem arestas
-        if (vertice->arestas.getRaiz() == nullptr) {
-            cout << "(sem arestas)" << endl;  // Caso o vértice não tenha arestas
-        } else {
-            // Itera sobre as arestas do vértice
-            NoA* noAresta = vertice->arestas.getRaiz();
-            while (noAresta) {
-                cout << "-> " << noAresta->a->id << " (Peso: " << noAresta->a->peso << ") ";
-                noAresta = noAresta->proximo;  // Move para a próxima aresta
-            }
-            cout << endl;
-        }
-
-        noVertice = noVertice->proximo;  // Move para o próximo vértice
-    }
-}
-
-
-
-// Verifica se as arestas são ponderadas
-bool GrafoLista::arestasPonderadas() const {
-    return ponderadoArestas;
-}
-
-
-bool GrafoLista::temCiclo() const { // Verifica se o grafo direcionado contém ciclos
-    int numVertices = vertices.tamanho();
-    bool* visitado = new bool[numVertices]();
-    bool* pilhaRecursao = new bool[numVertices](); // Para rastrear a pilha de recursão
-
-    for (int i = 0; i < numVertices; ++i) {
-        if (!visitado[i]) {
-            // Verifica ciclos a partir de cada vértice não visitado
-            Vertice* vertice = vertices.encontraVertice(i + 1);
-            if (verificaCicloUtil(vertice, visitado, pilhaRecursao)) {
-                delete[] visitado;
-                delete[] pilhaRecursao;
-                return true; // Ciclo encontrado
-            }
-        }
+    std::cout << "Lista de Adjacencia:\n";
+    NoV* noVertice = vertices.getRaiz();
+    if (!noVertice) {
+        std::cout << "Lista de vertices vazia.\n";
+        return;
     }
 
-    delete[] visitado;
-    delete[] pilhaRecursao;
-    return false; // Nenhum ciclo encontrado
-}
-
-bool GrafoLista::verificaCicloUtil(Vertice* vertice, bool* visitado, bool* pilhaRecursao) const { // Verifica ciclos em grafos direcionados
-    int id = vertice->id - 1; // Índice zero-based
-
-    // Se o vértice não foi visitado, explora suas arestas
-    if (!visitado[id]) {
-        visitado[id] = true;
-        pilhaRecursao[id] = true;
+    while (noVertice) {
+        Vertice* vertice = noVertice->v;
+        std::cout << "Vertice " << vertice->id << " (Peso: " << vertice->peso << "): ";
 
         NoA* noAresta = vertice->arestas.getRaiz();
+        if (!noAresta) {
+            std::cout << "Sem arestas.";
+        }
+
         while (noAresta) {
-            int destino = noAresta->a->id - 1;
-
-            // Caso não visitado, faz a chamada recursiva
-            if (!visitado[destino]) {
-                Vertice* destinoVertice = vertices.encontraVertice(destino + 1);
-                if (verificaCicloUtil(destinoVertice, visitado, pilhaRecursao)) {
-                    return true;
-                }
-            } 
-            // Se já está na pilha de recursão, encontrou um ciclo
-            else if (pilhaRecursao[destino]) {
-                return true;
-            }
-
+            std::cout << "-> " << noAresta->a->id << " (Peso: " << noAresta->a->peso << ") ";
             noAresta = noAresta->proximo;
         }
+        std::cout << std::endl;
+        noVertice = noVertice->proximo;
     }
-
-    pilhaRecursao[id] = false; // Remove da pilha de recursão
-    return false;
 }
 
 
 
-bool GrafoLista::temCicloNaoDirecionado() const { // Verifica se o grafo contém ciclos
+// Verifica se o grafo é completo
+bool GrafoLista::ehCompleto() const {
     int numVertices = vertices.tamanho();
-    bool* visitado = new bool[numVertices]();
-
-    for (int i = 0; i < numVertices; ++i) {
-        if (!visitado[i] && verificaCicloNaoDirecionado(vertices.encontraVertice(i + 1), visitado, -1)) {
-            delete[] visitado;
-            return true;
-        }
-    }
-
-    delete[] visitado;
-    return false;
-}
-
-bool GrafoLista::verificaCicloNaoDirecionado(Vertice* vertice, bool* visitado, int pai) const { // Verifica ciclos em grafos não direcionados
-    int id = vertice->id - 1;
-    visitado[id] = true;
-
-    NoA* noAresta = vertice->arestas.getRaiz();
-    while (noAresta) {
-        int destino = noAresta->a->id - 1;
-
-        if (!visitado[destino]) {
-            if (verificaCicloNaoDirecionado(vertices.encontraVertice(destino + 1), visitado, id)) {
-                return true;
-            }
-        } else if (destino != pai) { // Se o destino já foi visitado e não é o pai, encontrou um ciclo
-            return true;
-        }
-
-        noAresta = noAresta->proximo;
-    }
-
-    return false;
-}
-
-bool GrafoLista::ehDirecionado() const { // Verifica se o grafo é direcionado
-    return direcionado; // Retorna o valor armazenado ao carregar o grafo
-}
-
-// Verifica se o grafo é completo (todos os vértices estão conectados)
-bool GrafoLista::ehCompleto() const { 
-    int numVertices = vertices.tamanho();
-    NoV* noVertice = vertices.getRaiz(); // Pega a raiz da lista de vértices
+    NoV* noVertice = vertices.getRaiz();
     while (noVertice) {
-        if (noVertice->v->arestas.tamanho() != numVertices - 1) { // Verifica se o vértice tem o número correto de arestas
+        if (noVertice->v->arestas.tamanho() != numVertices - 1) {
             return false;
         }
-        noVertice = noVertice->proximo; // Move para o próximo vértice
+        noVertice = noVertice->proximo;
     }
     return true;
-}
-
-const ListaV& GrafoLista::getVertices() const { // Retorna uma referência constante para os vértices
-    return vertices; // vertices deve ser uma instância de ListaV
 }
 
 // Verifica se o grafo é conexo
 bool GrafoLista::ehConexo() const {
     int numVertices = vertices.tamanho();
-    if (numVertices == 0) return true; // Grafo vazio é considerado conexo
+    if (numVertices == 0) return true;
 
     bool* visitado = new bool[numVertices]();
-    dfsConexao(vertices.encontraVertice(1), visitado); // Executa DFS ignorando direções
+    dfsConexao(vertices.encontraVertice(1), visitado);
 
-    // Verifica se todos os vértices foram visitados
     for (int i = 0; i < numVertices; ++i) {
         if (!visitado[i]) {
             delete[] visitado;
-            return false; // Algum vértice não foi alcançado; grafo não é conexo
+            return false;
         }
     }
-
     delete[] visitado;
-    return true; // Todos os vértices foram visitados; grafo é conexo
+    return true;
 }
 
-// Modifica a DFS para ignorar direções (funciona para grafos direcionados e não direcionados)
+// Verifica se o grafo tem ciclos
+bool GrafoLista::temCiclo() const {
+    // Implementação da lógica para detecção de ciclos
+    return false;
+}
+
+// Obtém o grau de um vértice
+int GrafoLista::getGrau(int vertice) const {
+    if (vertice < 0 || vertice >= numVertices) {
+        throw std::invalid_argument("Indice fora do intervalo valido.");
+    }
+    int grau = 0;
+    for (int i = 0; i < numVertices; ++i) {
+        if (grafo[vertice][i] != 0) {
+            grau++;
+        }
+    }
+    return grau;
+}
+
+bool GrafoLista::existeAresta(int origem, int destino) const {
+    if (origem < 0 || origem >= numVertices || destino < 0 || destino >= numVertices) {
+        return false;
+    }
+    return grafo[origem][destino] != 0;
+}
+
+bool GrafoLista::ehArvore() const {
+    return ehConexo() && !temCiclo();
+}
+
 void GrafoLista::dfsConexao(Vertice* vertice, bool* visitado) const {
-    int id = vertice->id - 1; // Índice zero-based
+    int id = vertice->id - 1;
     visitado[id] = true;
 
-    // Percorre as arestas de saída
     NoA* noAresta = vertice->arestas.getRaiz();
     while (noAresta) {
-        int destino = noAresta->a->id - 1; // Índice zero-based
-        if (!visitado[destino]) {
-            dfsConexao(vertices.encontraVertice(destino + 1), visitado);
+        Vertice* vizinho = vertices.encontraVertice(noAresta->a->id);
+        if (!visitado[vizinho->id - 1]) {
+            dfsConexao(vizinho, visitado);
         }
         noAresta = noAresta->proximo;
     }
@@ -316,3 +260,127 @@ int* GrafoLista::getArestas(int id) const {
     }
     return adjacentes;
 }
+}
+
+
+
+
+
+
+void GrafoLista::deleta_no(int id) {
+    std::cout << "Excluindo nó " << id << "...\n";
+    
+
+    for (NoV* noAtual = vertices.getRaiz(); noAtual != nullptr; noAtual = noAtual->proximo) {
+        if (noAtual->v->id != id) {
+            noAtual->v->arestas.removeAresta(id);
+        }
+    }
+
+    NoV* atual = vertices.getRaiz();
+    NoV* anterior = nullptr;
+    
+    while (atual != nullptr) {
+        if (atual->v->id == id) {
+        
+            if (anterior == nullptr) {
+                vertices.setRaiz(atual->proximo);
+            } else {
+              
+                anterior->proximo = atual->proximo;
+            }
+     
+            delete atual->v;
+            delete atual;
+            
+          
+            numVertices--;
+            
+            std::cout << "Vertice " << id << " deletado com sucesso!\n";
+            return;  
+        }
+        anterior = atual;
+        atual = atual->proximo;
+    }
+    
+    
+    throw std::invalid_argument("Erro: vertice inexistente.");
+}
+
+
+
+
+void GrafoLista::novo_no(int id, int peso) {
+   
+    NoV* atual = vertices.getRaiz();
+    while (atual != nullptr) {
+        if (atual->v->id == id) {
+       
+            throw std::invalid_argument("Erro: vértice já existe.");
+        }
+        atual = atual->proximo;
+    }
+    
+    
+    Vertice* novoVertice = new Vertice(id, peso);
+    
+    vertices.inserirVertice(novoVertice);
+    
+    numVertices++;
+
+}
+
+
+
+void GrafoLista::deleta_aresta(int id) {
+    std::cout << "Excluindo primeira aresta do nó " << id << "...\n";
+    
+    // Encontra o vértice com o id informado.
+    Vertice* v = vertices.encontraVertice(id);
+    if (v == nullptr) {
+        std::cout << "Nenhum vértice com id " << id << " encontrado.\n";
+        return;
+    }
+    
+    NoA* firstEdge = v->arestas.getRaiz();
+    if (firstEdge == nullptr) {
+        std::cout << "Nenhuma aresta para remover no nó " << id << ".\n";
+        return;
+    }
+    
+    int dest = firstEdge->a->id;
+    
+    v->arestas.removePrimeiraAresta();
+    
+    if (!direcionado) {
+        Vertice* vDest = vertices.encontraVertice(dest);
+        if (vDest != nullptr) {
+            vDest->arestas.removeAresta(id);
+        }
+    }
+}
+
+void GrafoLista::nova_aresta(int origem, int destino, int peso, bool direcionado) {
+  
+    Vertice* vOrigem = vertices.encontraVertice(origem);
+    Vertice* vDestino  = vertices.encontraVertice(destino);
+
+    if (!vOrigem || !vDestino) {
+        throw std::invalid_argument("Erro: vértice inexistente.");
+    }
+
+    // Evita laços
+    if (origem == destino) {
+        throw std::invalid_argument("Erro: laços não permitidos.");
+    }
+
+    
+    vOrigem->arestas.insereAresta(destino, peso);
+
+    // Se o grafo for não direcionado, insere a aresta inversa (de destino para origem).
+    if (!direcionado) {
+        vDestino->arestas.insereAresta(origem, peso);
+    }
+}
+
+

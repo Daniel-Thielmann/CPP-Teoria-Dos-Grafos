@@ -1,56 +1,61 @@
 #include "Grafo.h"
 #include <iostream>
+#include <stdexcept>
 
 // Construtor
-Grafo::Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado) {
-    this->numVertices = numVertices;
-    this->ponderadoVertices = ponderadoVertices;
-	this->ponderadosArestas = ponderadosArestas;
-	this->direcionado = direcionado;
+Grafo::Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado)
+    : numVertices(numVertices), ponderadoVertices(ponderadoVertices),
+      ponderadosArestas(ponderadosArestas), direcionado(direcionado) {
+    inicializarMatriz();
 
-    // Alocação dinâmica da matriz de adjacências
-    adjacencias = new int*[numVertices];
+    grafo = new int*[numVertices];
     for (int i = 0; i < numVertices; ++i) {
-        adjacencias[i] = new int[numVertices]();
+        grafo[i] = new int[numVertices]();
     }
-}
 
-Grafo::Grafo(int numVertices) {
-    this->numVertices = numVertices;
-
-    // Alocação dinâmica da matriz de adjacências
-    adjacencias = new int*[numVertices];
-    for (int i = 0; i < numVertices; ++i) {
-        adjacencias[i] = new int[numVertices]();
-    }
 }
 
 // Destrutor
 Grafo::~Grafo() {
     for (int i = 0; i < numVertices; ++i) {
-        delete[] adjacencias[i];
+    delete[] grafo[i];
     }
-    delete[] adjacencias;
+    delete[] grafo;
 }
 
-// Adiciona uma aresta
-void Grafo::adicionarAresta(int origem, int destino) {
-    if (origem >= 0 && origem < numVertices && destino >= 0 && destino < numVertices) {
-        adjacencias[origem][destino] = 1;
-        adjacencias[destino][origem] = 1;
+
+void Grafo::inicializarMatriz() {
+    adjacencias = new int*[numVertices];
+    for (int i = 0; i < numVertices; ++i) {
+        adjacencias[i] = new int[numVertices]();
     }
 }
+
+
+// Adiciona uma aresta
+void Grafo::adicionarAresta(int origem, int destino, int peso) {
+    if (origem >= 0 && origem < numVertices && destino >= 0 && destino < numVertices) {
+        adjacencias[origem][destino] = peso;
+        if (!direcionado) {
+            adjacencias[destino][origem] = peso;
+        }
+    }
+}
+
 
 // Remove uma aresta
 void Grafo::removerAresta(int origem, int destino) {
-    if (origem >= 0 && origem < numVertices && destino >= 0 && destino < numVertices) {
-        adjacencias[origem][destino] = 0;
+    if (origem < 0 || origem >= numVertices || destino < 0 || destino >= numVertices) {
+        throw std::out_of_range("Índice de vertice fora dos limites.");
+    }
+    adjacencias[origem][destino] = 0;
+    if (!direcionado) {
         adjacencias[destino][origem] = 0;
     }
 }
 
 // Imprime a matriz de adjacências
-void Grafo::imprimirGrafo() {
+void Grafo::imprimeGrafo() const {
     for (int i = 0; i < numVertices; ++i) {
         for (int j = 0; j < numVertices; ++j) {
             std::cout << adjacencias[i][j] << " ";
@@ -60,40 +65,44 @@ void Grafo::imprimirGrafo() {
 }
 
 // Obtém o grau de um vértice
-int Grafo::getGrau(int vertice) {
-    if (vertice < 0 || vertice >= numVertices) return -1;
+int Grafo::getGrau(int vertice) const {
+    if (vertice < 0 || vertice >= numVertices) {
+        throw std::out_of_range("Índice de vertice fora dos limites.");
+    }
 
     int grau = 0;
     for (int i = 0; i < numVertices; ++i) {
-        if (adjacencias[vertice][i] != 0) { // Verifica se há aresta
+        if (adjacencias[vertice][i] != 0) {
             grau++;
         }
     }
     return grau;
 }
 
-// Retorna se as arestas tem direção
-bool Grafo::ehDirecionado()
-{
-	return direcionado;
+// Verifica se existe uma aresta entre dois vértices
+bool Grafo::existeAresta(int origem, int destino) const {
+    if (origem < 0 || origem >= numVertices || destino < 0 || destino >= numVertices) {
+        return false;
+    }
+    return adjacencias[origem][destino] != 0;
 }
 
-// Retorna se os vertices tem peso
-bool Grafo::verticePonderado()
-{
-	return ponderadoVertices;
-}
+// Verifica se o grafo é completo
+bool Grafo::ehCompleto() const {
+    // Um grafo completo deve ter todas as arestas possíveis entre os vértices.
+    // Para isso, a matriz de adjacência (ou lista de adjacência) deve ser preenchida corretamente.
 
-// Retorna se as arestas têm peso
-bool Grafo::arestaPonderada()
-{
-	return ponderadosArestas;
-}
+    for (int i = 0; i < numVertices; ++i) {
+        for (int j = 0; j < numVertices; ++j) {
+            if (i != j) { // Ignora a diagonal (arestas do vértice para si mesmo)
+                if (adjacencias[i][j] == 0) { // Se uma conexão estiver ausente, não é completo
+                    return false;
+                }
+            }
+        }
+    }
 
-// Retorna o número de elementos
-int Grafo::get_ordem()
-{
-	return numVertices;
+    return true; // Todas as conexões foram verificadas e existem
 }
 
 int Grafo::dfsMenorCaminho(int atual, int destino, bool visitado[], int distanciaAtual) 

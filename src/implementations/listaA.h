@@ -12,12 +12,12 @@ public:
     ListaA(); // Construtor
     ~ListaA(); // Destrutor
 
-   bool existeAresta(int idDestino); // Verifica se existe uma aresta com o ID de destino
+    bool existeAresta(int idDestino) const; // Adicionado 'const'
     void insereAresta(int destino, int peso); // Insere uma aresta na lista
     NoA* getRaiz() const; // Retorna a raiz da lista
     int tamanho() const; // Retorna o tamanho da lista
-
-
+    void removeAresta(int id);
+    void removePrimeiraAresta();
 };
 
 #endif // LISTAA_H

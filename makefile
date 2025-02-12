@@ -6,53 +6,43 @@ CXXFLAGS = -Wall -std=c++17 -g
 SRC_DIR = src
 CORE_DIR = $(SRC_DIR)/core
 IMPL_DIR = $(SRC_DIR)/implementations
-TEST_DIR = tests
-BIN_DIR = bin
-OBJ_DIR = obj
+TEST_DIR = $(SRC_DIR)/tests
 
-# Arquivos do núcleo e implementações
+# Arquivos de origem e objetos
 SRC = $(CORE_DIR)/Grafo.cpp \
+      $(IMPL_DIR)/grafo_lista.cpp \
+      $(IMPL_DIR)/grafo_matriz.cpp \
+      $(IMPL_DIR)/ListaV.cpp \
+      $(IMPL_DIR)/ListaA.cpp \
       $(IMPL_DIR)/eh_bipartido.cpp \
       $(IMPL_DIR)/get_grau.cpp \
       $(IMPL_DIR)/n_conexo.cpp
 
-# Arquivo principal
-MAIN = $(SRC_DIR)/main.cpp
+TEST_SRC = $(TEST_DIR)/teste_eh_bipartido.cpp \
+           $(TEST_DIR)/teste_get_grau.cpp \
+           $(TEST_DIR)/teste_n_conexo.cpp
 
-# Arquivos de teste
-TESTS = $(TEST_DIR)/teste_eh_bipartido.cpp \
-        $(TEST_DIR)/teste_get_grau.cpp \
-        $(TEST_DIR)/teste_n_conexo.cpp \
-        $(TEST_DIR)/teste_todos.cpp
+MAIN_APP = $(SRC_DIR)/main.cpp
+MAIN_TEST = $(TEST_DIR)/teste_todos_daniel.cpp
 
-# Objetos
-OBJ = $(SRC:.cpp=.o) $(MAIN:.cpp=.o)
-TEST_OBJ = $(SRC:.cpp=.o) $(TESTS:.cpp=.o)
+# Binário final
+BIN_DIR = bin
+BIN_APP = $(BIN_DIR)/programa.exe
+BIN_TEST = $(BIN_DIR)/teste_todos_daniel.exe
 
-# Binaries
-BIN_MAIN = $(BIN_DIR)/programa.exe
-BIN_TEST = $(BIN_DIR)/teste_todos.exe
+# Regras
+all: $(BIN_APP) $(BIN_TEST)
 
-# Regra padrão
-all: main test
+# Regra para o programa principal
+$(BIN_APP): $(SRC) $(MAIN_APP)
+	mkdir -p $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Regra para compilar o programa principal
-main: $(OBJ)
-	@echo "Objetos gerados para main:" $(OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $(BIN_MAIN)
+# Regra para os testes
+$(BIN_TEST): $(SRC) $(MAIN_TEST) $(TEST_SRC)
+	mkdir -p $(BIN_DIR)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Regra para compilar os testes
-test: $(TEST_OBJ)
-	@echo "Objetos gerados para testes:" $(TEST_OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $(BIN_TEST)
-
-# Regra genérica para compilar arquivos .cpp em .o
-%.o: %.cpp
-	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-# Limpeza dos arquivos gerados
+# Limpeza
 clean:
-	rm -f $(OBJ) $(TEST_OBJ) $(BIN_MAIN) $(BIN_TEST)
-
-CXXFLAGS = -Wall -std=c++17 -g -I$(IMPL_DIR)
+	rm -rf obj $(BIN_DIR)

@@ -2,17 +2,11 @@
 #define GRAFO_MATRIZ_H
 
 #include "../core/Grafo.h"
-#include <iostream>
-using namespace std;
 
-class grafo_matriz : public Grafo
-{
+class GrafoMatriz : public Grafo {
 private:
-
-	int * pesoVerticesices;  // valor de cada pesoVerticesicesice
-	int ** grafo; // vector para substituir lista e matriz
-	int tam_lista(int a);  // fun��o que retorna o tamanho de uma array que representa uma matriz triangular quadrada de a colunas/linhas
-
+    int* pesoVertices;
+    int** grafo;
 
 public:
 
@@ -29,6 +23,18 @@ public:
 
 
 	
+    GrafoMatriz(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado, int pesoVertices[]);
+    ~GrafoMatriz();
+
+    void adicionarAresta(int origem, int destino, int peso = 1) override;
+    void removerAresta(int origem, int destino) override;
+    void imprimeGrafo() const override;
+    int getGrau(int vertice) const override;
+    bool existeAresta(int origem, int destino) const override;
+    bool ehConexo() const override;
+    bool ehCompleto() const override;
+    bool ehArvore() const override;
+    bool temCiclo() const override;
 };
 
 #endif // GRAFO_MATRIZ_H

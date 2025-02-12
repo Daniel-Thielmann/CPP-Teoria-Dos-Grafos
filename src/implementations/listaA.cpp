@@ -1,7 +1,6 @@
 #include "listaA.h"
-
 #include <cstdlib>
-
+#include <stdexcept>
 
 ListaA::ListaA() : raiz(nullptr) {} // Construtor da lista de arestas
 
@@ -15,28 +14,27 @@ ListaA::~ListaA() { // Destrutor da lista de arestas
 }
 
 
- void ListaA::insereAresta(int destino, int peso) { // Método para inserir uma aresta
-        Aresta* novaAresta = new Aresta(destino, peso);
-        NoA* novoNo = new NoA(novaAresta);
-        novoNo->proximo = raiz;
-        raiz = novoNo;
-    }
-
-    // Método para verificar se existe uma aresta (com id)
-    bool ListaA::existeAresta(int idDestino) {
-        NoA* atual = raiz;
-        while (atual != nullptr) {
-            if (atual->a->id == idDestino) {
-                return true;
-            }
-            atual = atual->proximo;
+ bool ListaA::existeAresta(int idDestino) const { // Adicionado 'const'
+    NoA* atual = raiz;
+    while (atual != nullptr) {
+        if (atual->a->id == idDestino) {
+            return true;
         }
-        return false;
+        atual = atual->proximo;
     }
-
-   NoA* ListaA::getRaiz() const { // Método para retornar a raiz da lista
-    return raiz; // Retorna a raiz da lista
+    return false;
 }
+
+void ListaA::insereAresta(int destino, int peso) {
+    if (existeAresta(destino)) {
+        throw std::invalid_argument("Aresta já existe!");
+    }
+    Aresta* novaAresta = new Aresta(destino, peso);
+    NoA* novoNo = new NoA(novaAresta);
+    novoNo->proximo = raiz;
+    raiz = novoNo;
+}
+
 
 int ListaA::tamanho() const { // Método para retornar o tamanho da lista
     int count = 0;
@@ -46,4 +44,41 @@ int ListaA::tamanho() const { // Método para retornar o tamanho da lista
         atual = atual->proximo;
     }
     return count;
+}
+
+void ListaA::removeAresta(int id) {
+    NoA* atual = raiz;
+    NoA* anterior = nullptr;
+
+    while (atual) {
+        if (atual->a->id == id) {
+            if (anterior) {
+                anterior->proximo = atual->proximo;
+            } else {
+                raiz = atual->proximo;
+            }
+            delete atual->a;
+            delete atual;
+            return;
+        }
+        anterior = atual;
+        atual = atual->proximo;
+    }
+}
+
+
+
+void ListaA::removePrimeiraAresta() {
+    if (raiz != nullptr) {
+        NoA* temp = raiz;
+        raiz = raiz->proximo;
+        delete temp->a;   // libera a memória da aresta
+        delete temp;      // libera o nó da lista
+    }
+}
+
+
+
+NoA* ListaA::getRaiz() const {
+    return raiz; // Retorna a raiz da lista
 }

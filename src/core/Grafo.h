@@ -2,18 +2,20 @@
 #define GRAFO_H
 
 class Grafo {
-protected:
-    int** adjacencias; // Matriz de adjacências
-    int numVertices;   // Número de vértices
+private:
+    int** grafo;
 
-    bool ponderadoVertices; //pesoVerticesicesices  0 == n�o ponderados  1 == ponderados
-	bool ponderadosArestas; //arestas 0 == n�o ponderadas  1 == ponderadas
-	bool direcionado; // 0 == n�o direcionado 1 == direcionado
+protected:
+    int numVertices;
+    bool ponderadoVertices;
+    bool ponderadosArestas;
+    bool direcionado;
+    int** adjacencias; // Matriz de adjacência
+    void inicializarMatriz();
 
 public:
-    Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado);  // Construtor
-    Grafo(int numVertices);
-    virtual ~Grafo(); // Destrutor
+    Grafo(int numVertices, bool ponderadoVertices, bool ponderadosArestas, bool direcionado);
+    virtual ~Grafo();
 
     void adicionarAresta(int origem, int destino);
     void removerAresta(int origem, int destino);
@@ -36,6 +38,15 @@ public:
     // Métodos getters
     int** getAdjacencias() const { return adjacencias; }
     int getNumVertices() const { return numVertices; }
+    virtual void adicionarAresta(int origem, int destino, int peso = 1) = 0;
+    virtual void removerAresta(int origem, int destino) = 0;
+    virtual void imprimeGrafo() const = 0; 
+    virtual int getGrau(int vertice) const = 0;
+    virtual bool existeAresta(int origem, int destino) const = 0;
+    virtual bool ehConexo() const = 0;
+    virtual bool ehCompleto() const = 0;
+    virtual bool ehArvore() const = 0;
+    virtual bool temCiclo() const = 0;
 };
 
 #endif // GRAFO_H
