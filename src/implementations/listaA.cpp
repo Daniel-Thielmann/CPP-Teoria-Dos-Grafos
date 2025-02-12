@@ -66,19 +66,6 @@ void ListaA::removeAresta(int id) {
     }
 }
 
-
-
-void ListaA::removePrimeiraAresta() {
-    if (raiz != nullptr) {
-        NoA* temp = raiz;
-        raiz = raiz->proximo;
-        delete temp->a;   // libera a memória da aresta
-        delete temp;      // libera o nó da lista
-    }
-}
-
-
-
 NoA* ListaA::getRaiz() const {
     return raiz; // Retorna a raiz da lista
 }

@@ -17,7 +17,6 @@ public:
     NoA* getRaiz() const; // Retorna a raiz da lista
     int tamanho() const; // Retorna o tamanho da lista
     void removeAresta(int id);
-    void removePrimeiraAresta();
 };
 
 #endif // LISTAA_H

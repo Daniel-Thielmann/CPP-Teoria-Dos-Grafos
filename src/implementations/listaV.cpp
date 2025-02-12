@@ -52,6 +52,3 @@ int ListaV::tamanho() const { // Retorna o tamanho da lista
     return count;
 }
 
-void ListaV::setRaiz(NoV* novaRaiz) {
-    raiz = novaRaiz;
-}
