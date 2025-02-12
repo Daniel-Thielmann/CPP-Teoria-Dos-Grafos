@@ -24,7 +24,6 @@ public:
     void removerAresta(int origem, int destino) override;
 
     void deleta_no(int id); 
-    void deleta_aresta2(int origem, int destino);
     void novo_no(int id, int peso);
     void deleta_aresta(int id); 
     void nova_aresta(int origem, int destino, int peso, bool direcionado); 

@@ -51,29 +51,6 @@ GrafoLista::GrafoLista(const std::string& arquivo)
 }
 */
 
-/*
-GrafoLista::~GrafoLista() {
-    // Se você não usa a matriz 'grafo', não tente liberá-la.
-    // Libera os vértices restantes na lista (os que não foram removidos manualmente)
-    NoV* atual = vertices.getRaiz();
-    while (atual != nullptr) {
-        NoV* proximo = atual->proximo;
-        // Note: se você já liberou alguns vértices com deleta_no, eles já não estarão na lista.
-        // Aqui, libere os que restarem.
-        delete atual->v;
-        delete atual;
-        atual = proximo;
-    }
-    // Se 'grafo' foi realmente alocado para outra finalidade, libere-o somente se for diferente de nullptr.
-    if (grafo != nullptr) {
-        for (int i = 0; i < numVertices; ++i) {
-            delete[] grafo[i];
-        }
-        delete[] grafo;
-    }
-}
-
-*/
 
 GrafoLista::~GrafoLista() {
 
