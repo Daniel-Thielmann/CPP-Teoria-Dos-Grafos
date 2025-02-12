@@ -115,3 +115,50 @@ bool GrafoMatriz::ehArvore() const {
 bool GrafoMatriz::temCiclo() const {
     return false; // Implementação simplificada
 }
+
+int* grafo_matriz::getArestas(int id) const {
+    if (id < 0 || id >= numVertices) {
+        return nullptr; // Retorna nullptr se o vértice for inválido
+    }
+    int count = 0;
+    // Contar quantos vizinhos o vértice tem
+    if (direcionado) {
+        for (int j = 0; j < numVertices; j++) {
+            if (grafo[id][j] != 0) {
+                count++;
+            }
+        }
+    } else {
+        for (int j = 0; j < numVertices; j++) {
+            if (id != j) {
+                int pos = (id > j) ? j + tam_lista(id - 1) - 1 : id + tam_lista(j - 1) - 1;
+                if (grafo[0][pos] != 0) {
+                    count++;
+                }
+            }
+        }
+    }
+    if (count == 0) {
+        return null; //
+    }
+    // Criar um array dinâmico para armazenar os ids dos vértices adjacentes
+    int* adjacentes = new int[count];
+    int index = 0;
+    if (direcionado) {
+        for (int j = 0; j < numVertices; j++) {
+            if (grafo[id][j] != 0) {
+                adjacentes[index++] = j;
+            }
+        }
+    } else {
+        for (int j = 0; j < numVertices; j++) {
+            if (id != j) {
+                int pos = (id > j) ? j + tam_lista(id - 1) - 1 : id + tam_lista(j - 1) - 1;
+                if (grafo[0][pos] != 0) {
+                    adjacentes[index++] = j;
+                }
+            }
+        }
+    }
+    return adjacentes;
+}

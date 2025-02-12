@@ -29,6 +29,7 @@ public:
     bool ehCompleto() const override;
     bool ehArvore() const override;
     bool temCiclo() const override;
+    int* getArestas(int id) const override;
 };
 
 #endif // GRAFO_LISTA_H
