@@ -1,10 +1,11 @@
 #include "grafo_lista.h"
+#include "../core/Grafo.h"
 #include <fstream>
-#include <stdexcept>
 #include <stdexcept>
 #include <iostream>
 #include "listaA.h"
 #include "listaV.h"
+
 
 GrafoLista::GrafoLista(const std::string& arquivo)
     : Grafo(0, false, false, false) {
@@ -36,15 +37,23 @@ GrafoLista::GrafoLista(const std::string& arquivo)
 
     std::cout << "Numero de vertices: " << numVertices << std::endl;
 
+
+
 }
 
 
 
-GrafoLista::~GrafoLista() {
+/*GrafoLista::~GrafoLista() {
     for (int i = 0; i < numVertices; ++i) {
         delete[] grafo[i];
     }
     delete[] grafo;
+}
+*/
+
+
+GrafoLista::~GrafoLista() {
+
 }
 
 // Adiciona uma aresta
@@ -185,6 +194,127 @@ void GrafoLista::dfsConexao(Vertice* vertice, bool* visitado) const {
             dfsConexao(vizinho, visitado);
         }
         noAresta = noAresta->proximo;
+    }
+}
+
+
+
+
+
+
+void GrafoLista::deleta_no(int id) {
+    std::cout << "Excluindo nó " << id << "...\n";
+    
+
+    for (NoV* noAtual = vertices.getRaiz(); noAtual != nullptr; noAtual = noAtual->proximo) {
+        if (noAtual->v->id != id) {
+            noAtual->v->arestas.removeAresta(id);
+        }
+    }
+
+    NoV* atual = vertices.getRaiz();
+    NoV* anterior = nullptr;
+    
+    while (atual != nullptr) {
+        if (atual->v->id == id) {
+        
+            if (anterior == nullptr) {
+                vertices.setRaiz(atual->proximo);
+            } else {
+              
+                anterior->proximo = atual->proximo;
+            }
+     
+            delete atual->v;
+            delete atual;
+            
+          
+            numVertices--;
+            
+            std::cout << "Vertice " << id << " deletado com sucesso!\n";
+            return;  
+        }
+        anterior = atual;
+        atual = atual->proximo;
+    }
+    
+    
+    throw std::invalid_argument("Erro: vertice inexistente.");
+}
+
+
+
+
+void GrafoLista::novo_no(int id, int peso) {
+   
+    NoV* atual = vertices.getRaiz();
+    while (atual != nullptr) {
+        if (atual->v->id == id) {
+       
+            throw std::invalid_argument("Erro: vértice já existe.");
+        }
+        atual = atual->proximo;
+    }
+    
+    
+    Vertice* novoVertice = new Vertice(id, peso);
+    
+    vertices.inserirVertice(novoVertice);
+    
+    numVertices++;
+
+}
+
+
+
+void GrafoLista::deleta_aresta(int id) {
+    std::cout << "Excluindo primeira aresta do nó " << id << "...\n";
+    
+    // Encontra o vértice com o id informado.
+    Vertice* v = vertices.encontraVertice(id);
+    if (v == nullptr) {
+        std::cout << "Nenhum vértice com id " << id << " encontrado.\n";
+        return;
+    }
+    
+    NoA* firstEdge = v->arestas.getRaiz();
+    if (firstEdge == nullptr) {
+        std::cout << "Nenhuma aresta para remover no nó " << id << ".\n";
+        return;
+    }
+    
+    int dest = firstEdge->a->id;
+    
+    v->arestas.removePrimeiraAresta();
+    
+    if (!direcionado) {
+        Vertice* vDest = vertices.encontraVertice(dest);
+        if (vDest != nullptr) {
+            vDest->arestas.removeAresta(id);
+        }
+    }
+}
+
+void GrafoLista::nova_aresta(int origem, int destino, int peso, bool direcionado) {
+  
+    Vertice* vOrigem = vertices.encontraVertice(origem);
+    Vertice* vDestino  = vertices.encontraVertice(destino);
+
+    if (!vOrigem || !vDestino) {
+        throw std::invalid_argument("Erro: vértice inexistente.");
+    }
+
+    // Evita laços
+    if (origem == destino) {
+        throw std::invalid_argument("Erro: laços não permitidos.");
+    }
+
+    
+    vOrigem->arestas.insereAresta(destino, peso);
+
+    // Se o grafo for não direcionado, insere a aresta inversa (de destino para origem).
+    if (!direcionado) {
+        vDestino->arestas.insereAresta(origem, peso);
     }
 }
 
