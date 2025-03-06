@@ -318,26 +318,4 @@ void GrafoLista::nova_aresta(int origem, int destino, int peso, bool direcionado
     }
 }
 
-int* GrafoLista::getArestas(int id) const {
-    Vertice* vertice = vertices.encontraVertice(id);
-    NoA* noAresta = vertice->arestas.getRaiz();
-    if (!noAresta) {
-        return null;
-    }
-    // Contar quantas arestas existem para alocar espaço
-    int count = 0;
-    NoA* temp = noAresta;
-    while (temp) {
-        count++;
-        temp = temp->proximo;
-    }
-    // Criar um array dinâmico para armazenar os vértices adjacentes
-    int* adjacentes = new int[count];
-    // Preencher o array com os vértices conectados
-    temp = noAresta; // Resetar ponteiro para o início da lista
-    for (int i = 0; i < count; i++) {
-        adjacentes[i] = temp->a->id;
-        temp = temp->proximo;
-    }
-    return adjacentes;
-}
+
